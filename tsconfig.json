@@ -15,9 +15,10 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "typeRoots": ["./global.d.ts", "./node_modules/@types"]
+    "typeRoots": ["./global.d.ts", "./node_modules/@types"],
+    "rootDir": "src"
   },
-  "include": ["src/**/*.ts", "global.d.ts", "tests/**/*.ts"],
+  "include": ["src/**/*.ts", "global.d.ts"],
   "exclude": [
     "node_modules/**/*",
     ".serverless/**/*",
