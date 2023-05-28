@@ -21,7 +21,7 @@ describe('Adapt Route', () => {
         password: 'any_password',
       },
     };
-    await sut(req as any, { status: jest.fn(() => ({ json: jest.fn() })), json: jest.fn() });
+    await sut(req as any, { status: jest.fn(() => ({ json: jest.fn() })), json: jest.fn() } as any);
     expect(controller.handle).toHaveBeenCalledWith(req);
   });
 });
