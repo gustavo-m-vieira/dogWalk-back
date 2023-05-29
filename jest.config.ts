@@ -5,27 +5,27 @@ const config: Config.InitialOptions = {
   testEnvironment: 'node',
   setupFilesAfterEnv: ['<rootDir>/jest-env.ts'],
   collectCoverageFrom: [
-    '<rootDir>/src/controllers/**/*.ts',
-    '<rootDir>/src/entities/**/*.ts',
-    '<rootDir>/src/providers/**/*.ts',
-    '<rootDir>/src/repositories/**/*.ts',
-    '<rootDir>/src/useCases/**/*.ts',
-    '!<rootDir>/src/controllers/**/index.ts',
-    '!<rootDir>/src/controllers/**/bodySchema.ts',
-    '!<rootDir>/src/repositories/**/schema.ts',
+    '<rootDir>/src/infrastructure/**/*.ts',
+    '!<rootDir>/src/infrastructure/**/bodySchema.ts',
+    '<rootDir>/src/infrastructure/repositories/*.ts',
+    '!<rootDir>/src/app/repositories/*.ts',
+    '<rootDir>/src/app/entities/*.ts',
+    '<rootDir>/src/app/useCases/**/*.ts',
+    '<rootDir>/src/main/**/*.ts',
+    '!<rootDir>/src/main/config/**/*.ts',
+    '!<rootDir>/src/main/factories/**/*.ts',
+    '!<rootDir>/src/main/routes/**/*.ts',
+    '!<rootDir>/src/main/server.ts',
   ],
-  moduleNameMapper: {
-    '^@/(.*)': '<rootDir>/src/$1',
-  },
+  moduleNameMapper: {},
   transform: {
     '^.+\\.(ts|tsx)?$': '@swc/jest',
-    // '^.+\\.(js|jsx)$': 'babel-jest',
   },
   clearMocks: true,
-  // coverageThreshold: {
-  //   global: {
-  //     lines: 100,
-  //   },
-  // },
+  coverageThreshold: {
+    global: {
+      lines: 100,
+    },
+  },
 };
 export default config;
