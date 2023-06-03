@@ -1,14 +1,14 @@
 import { User } from '../entities/user';
 
 export interface IRequest {
-  body: any;
+  body?: any;
   headers: {
     [key: string]: string | undefined;
   };
-  pathParameters: {
+  pathParameters?: {
     [key: string]: string;
   };
-  queryStringParameters: {
+  queryStringParameters?: {
     [key: string]: string;
   };
   requestContext?: {

@@ -25,7 +25,7 @@ interface IOptions {
 export class User {
   private props: IUser;
 
-  constructor(props: Omit<IUser, 'id' | 'createdAt'>, { createdAt, id }: IOptions) {
+  constructor(props: Omit<IUser, 'id' | 'createdAt'>, { createdAt, id }: IOptions = {}) {
     this.props = {
       name: props.name,
       email: props.email,

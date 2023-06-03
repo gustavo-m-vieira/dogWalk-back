@@ -28,6 +28,8 @@ export class MockUserRepository implements IUserRepository {
   }
 
   async save(user: User): Promise<void> {
+    if (await this.findByEmail(user.email)) throw new Error('User already exists');
+
     this.users.push(user);
   }
 }
