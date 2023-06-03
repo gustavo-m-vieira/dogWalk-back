@@ -5,7 +5,7 @@ export class AuthorizationMiddleware {
   constructor(private allowedRoles: Array<RolesEnum>) {}
 
   // eslint-disable-next-line consistent-return
-  async authorize(
+  async execute(
     req: Request & { requestContext?: { authorizer?: { user: User } } },
     res: Response,
     next: NextFunction
