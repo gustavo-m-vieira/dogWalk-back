@@ -20,6 +20,7 @@ const serverlessConfiguration: AWS = {
       databasePassword:
         '${ssm:/aws/reference/secretsmanager/${self:custom.database.secretName}, ""}',
       databaseEndpoint: '${self:custom.database.endpoint, ""}',
+      jwtKey: '${ssm:/aws/reference/secretsmanager/${self:custom.jwt.secretName}, ""}',
     },
   },
   resources: { ...resources },
@@ -38,6 +39,9 @@ const serverlessConfiguration: AWS = {
     'export-env': {
       filename: '.env',
       overwrite: true,
+    },
+    jwt: {
+      secretName: '${self:service}-jwtKey',
     },
   },
 };
