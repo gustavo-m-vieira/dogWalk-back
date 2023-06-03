@@ -1,27 +1,10 @@
-# TODO: Adicionar ao gitignore, criar script para monta-lo e definir novo login e senha para o banco
 version: '3'
 
 services:
   backend:
     build: ./
     container_name: backend
-    environment:
-      - NODE_ENV=production
+    env_file:
+      - .env
     ports:
       - 3000:3000
-
-  database:
-    image: postgres:14
-    container_name: database
-    ports:
-      - 5434:5432
-    environment:
-      POSTGRES_DB: dogWalkerDB
-      POSTGRES_USER: dogWalkerApp
-      POSTGRES_PASSWORD: dogWalkerAppPass11@
-    volumes:
-      - pgdata:/data/postgres
-
-volumes:
-  pgdata:
-    driver: local
