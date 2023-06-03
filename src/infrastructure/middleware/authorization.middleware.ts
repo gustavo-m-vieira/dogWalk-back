@@ -6,11 +6,11 @@ export class AuthorizationMiddleware {
 
   // eslint-disable-next-line consistent-return
   async authorize(
-    req: Request & { requestContext: { authorizer: User } },
+    req: Request & { requestContext?: { authorizer?: { user: User } } },
     res: Response,
     next: NextFunction
   ) {
-    const user = req.requestContext?.authorizer;
+    const { user } = req.requestContext?.authorizer || {};
 
     if (!user) return res.status(401).json({ error: 'Not Authenticated' });
 

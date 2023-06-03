@@ -7,6 +7,7 @@ const config: Config.InitialOptions = {
   collectCoverageFrom: [
     '<rootDir>/src/app/controllers/*.ts',
     '<rootDir>/src/infrastructure/repositories/*.ts',
+    '<rootDir>/src/infrastructure/middleware/*.ts',
     '!<rootDir>/src/app/repositories/*.ts',
     '<rootDir>/src/app/entities/*.ts',
     '<rootDir>/src/app/useCases/**/*.ts',

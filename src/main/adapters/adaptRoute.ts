@@ -9,9 +9,7 @@ export function adaptRoute(controller: IController) {
 
     const request: IRequest = {
       body,
-      headers: {
-        Authorization: headers.Authorization as string,
-      },
+      headers: headers as Record<string, string>,
       pathParameters: params,
       queryStringParameters: query as Record<string, string>,
       requestContext,
@@ -19,6 +17,6 @@ export function adaptRoute(controller: IController) {
 
     const { statusCode, body: resBody } = await controller.handle(request);
 
-    res.status(statusCode).json(resBody);
+    if (statusCode) res.status(statusCode).json(resBody);
   };
 }
