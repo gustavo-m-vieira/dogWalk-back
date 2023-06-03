@@ -20,6 +20,7 @@ describe('Adapt Route', () => {
         email: 'any_email',
         password: 'any_password',
       },
+      headers: {},
     };
     await sut(req as any, { status: jest.fn(() => ({ json: jest.fn() })), json: jest.fn() } as any);
     expect(controller.handle).toHaveBeenCalledWith(req);

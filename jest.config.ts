@@ -5,8 +5,7 @@ const config: Config.InitialOptions = {
   testEnvironment: 'node',
   setupFilesAfterEnv: ['<rootDir>/jest-env.ts'],
   collectCoverageFrom: [
-    '<rootDir>/src/infrastructure/**/*.ts',
-    '!<rootDir>/src/infrastructure/**/bodySchema.ts',
+    '<rootDir>/src/app/controllers/*.ts',
     '<rootDir>/src/infrastructure/repositories/*.ts',
     '!<rootDir>/src/app/repositories/*.ts',
     '<rootDir>/src/app/entities/*.ts',

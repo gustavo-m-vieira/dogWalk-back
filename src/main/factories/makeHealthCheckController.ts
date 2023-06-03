@@ -1,4 +1,4 @@
-import { HealthCheckController } from '../../infrastructure/controllers/HealthCheck/healthCheck.controller';
+import { HealthCheckController } from '../../app/controllers/healthCheck.controller';
 
 export function makeHealthCheckController() {
   const healthCheckController = new HealthCheckController();
