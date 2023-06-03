@@ -69,6 +69,7 @@ model TripDogs {
 enum UserTypeEnum {
   TUTOR
   DOGWALKER
+  ADMIN
 }
 
 enum DogSizeEnum {
