@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id         String
+  cpf        String
+  name       String
+  type       UserTypeEnum
+  email      String
+  telephone  String
+  passwordHash String
+  createdAt  DateTime
+}
+
+model Address {
+  id         String
+  street     String
+  number     Int
+  complement String?
+  city       String
+  district   String
+  UserId     String
+  user       User       @relation(fields: [UserId], references: [id])
+}
+
+model Dog {
+  id           String
+  name         String
+  breed        String
+  size         DogSizeEnum
+  temperament  DogTemperamentEnum
+  createdAt    DateTime
+  deletedAt    DateTime?
+  TutorId      String
+  tutor        User       @relation(fields: [TutorId], references: [id])
+}
+
+model Trip {
+  id            String
+  startDate     DateTime
+  duration      Int         // in minutes
+  DogWalkerId   String
+  dogWalker     User        @relation(fields: [DogWalkerId], references: [id])
+  slots         Int
+  dogType       DogTemperamentEnum
+  createdAt     DateTime
+}
+
+model TripDogs {
+  TripId       String     @id
+  DogId        String     @id
+  createdAt    DateTime
+  catched      DateTime?
+  dropped      DateTime?
+  trip         Trip       @relation(fields: [TripId], references: [id])
+  dog          Dog        @relation(fields: [DogId], references: [id])
+}
+
+enum UserTypeEnum {
+  TUTOR
+  DOGWALKER
+}
+
+enum DogSizeEnum {
+  TINY
+  SMALL
+  MEDIUM
+  BIG
+}
+
+enum DogTemperamentEnum {
+  COOL
+  SHY
+  ANGRY
+}
