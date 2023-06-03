@@ -8,7 +8,7 @@ const serverlessConfiguration: AWS = {
   plugins: ['serverless-export-env'],
   provider: {
     name: 'aws',
-    profile: '${self:custom.stage}',
+    profile: 'ufrj',
     region: 'us-east-1',
     versionFunctions: false,
     runtime: 'nodejs18.x',
@@ -17,10 +17,9 @@ const serverlessConfiguration: AWS = {
       NODE_ENV: 'production',
       databaseName: '${self:custom.database.name}',
       databaseUsername: '${self:custom.database.username}',
-      databasePassword: '${ssm:/aws/reference/secretsmanager/${self:custom.database.secretName}}',
-      databaseEndpoint: {
-        'Fn::GetAtt': ['RDSInstance', 'Endpoint.Address'],
-      },
+      databasePassword:
+        '${ssm:/aws/reference/secretsmanager/${self:custom.database.secretName}, ""}',
+      databaseEndpoint: '${self:custom.database.endpoint, ""}',
     },
   },
   resources: { ...resources },
@@ -32,6 +31,9 @@ const serverlessConfiguration: AWS = {
       secretName: '${self:service}-database',
       instanceClass: 'db.t4g.micro',
       allocatedStorage: 20,
+      endpoint: {
+        'Fn::ImportValue': '${self:service}-RDSInstanceEndpoint',
+      },
     },
     'export-env': {
       filename: '.env',

@@ -25,10 +25,12 @@ Para implantar o banco do DogWalker na AWS usando o Serverless Framework, siga a
    npm install -g serverless
    ```
 
-2. Configure as credenciais da AWS no Serverless Framework. Abra um terminal e execute o seguinte comando:
+2. Configure as credenciais da AWS no Serverless Framework. Abra o arquivo `.aws\credentials` e cole o seguinte código:
 
    ```shell
-   serverless config credentials --provider aws --key YOUR_ACCESS_KEY --secret YOUR_SECRET_KEY
+   [ufrj]
+   aws_access_key_id = YOUR_ACCESS_KEY
+   aws_secret_access_key = YOUR_SECRET_KEY
    ```
 
    Substitua `YOUR_ACCESS_KEY` e `YOUR_SECRET_KEY` pelas suas chaves de acesso da AWS.

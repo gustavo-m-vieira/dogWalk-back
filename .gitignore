@@ -4,3 +4,4 @@ globalConfig.json
 coverage
 .env
 .eslintcache
+.serverless/*

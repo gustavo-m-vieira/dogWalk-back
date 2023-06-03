@@ -78,6 +78,17 @@ const resource = {
       },
     },
   },
+  Outputs: {
+    RDSInstanceEndpoint: {
+      Description: 'RDS Instance Endpoint',
+      Value: {
+        'Fn::GetAtt': ['RDSInstance', 'Endpoint.Address'],
+      },
+      Export: {
+        Name: '${self:service}-RDSInstanceEndpoint',
+      },
+    },
+  },
 };
 
 export default resource;
