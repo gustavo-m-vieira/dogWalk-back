@@ -38,6 +38,7 @@ model Dog {
   name         String
   breed        String
   size         DogSizeEnum
+  birthDate    DateTime
   temperament  DogTemperamentEnum
   createdAt    DateTime
   deletedAt    DateTime?
