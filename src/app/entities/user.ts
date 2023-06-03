@@ -1,4 +1,4 @@
-import bcrypt from 'bcryptjs';
+import md5 from 'md5';
 import { v4 as uuidV4 } from 'uuid';
 
 export enum RolesEnum {
@@ -62,7 +62,7 @@ export class User {
   }
 
   validatePassword(password: string): boolean {
-    return bcrypt.compareSync(password, this.props.passwordHash);
+    return md5(password) === this.props.passwordHash;
   }
 
   toJSON(): Omit<IUser, 'passwordHash'> {
@@ -73,8 +73,6 @@ export class User {
   }
 
   static generatePasswordHash(password: string): string {
-    const salt = bcrypt.genSaltSync(10);
-
-    return bcrypt.hashSync(password, salt);
+    return md5(password);
   }
 }

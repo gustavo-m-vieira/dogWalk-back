@@ -6,7 +6,7 @@ const resource = {
         Name: '${self:custom.jwt.secretName}',
         Description: 'JWT Key',
         GenerateSecretString: {
-          PasswordLength: 32,
+          PasswordLength: 64,
           IncludeSpace: false,
           ExcludePunctuation: true,
           ExcludeCharacters: 'AÁÀÂÄÃaáàâäãEÉÈÊËeéèêëIÍÌÎÏiíìîïOÓÒÔÖÕoóòôöõUÚÙÛÜuúùûüCÇcç',
