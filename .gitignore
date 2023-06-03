@@ -1,6 +1,5 @@
 node_modules
 dist
-resources
 globalConfig.json
 coverage
 .env
