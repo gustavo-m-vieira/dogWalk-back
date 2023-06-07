@@ -15,11 +15,12 @@ const serverlessConfiguration: AWS = {
     architecture: 'arm64',
     environment: {
       NODE_ENV: 'production',
-      databaseName: '${self:custom.database.name}',
-      databaseUsername: '${self:custom.database.username}',
-      databasePassword:
+      DATABASE_NAME: '${self:custom.database.name}',
+      DATABASE_USERNAME: '${self:custom.database.username}',
+      DATABASE_PASSWORD:
         '${ssm:/aws/reference/secretsmanager/${self:custom.database.secretName}, ""}',
-      databaseEndpoint: '${self:custom.database.endpoint, ""}',
+      DATABASE_ENDPOINT: '${self:custom.database.endpoint, ""}',
+      JWT_KEY: '${ssm:/aws/reference/secretsmanager/${self:custom.jwt.secretName}, ""}',
     },
   },
   resources: { ...resources },
@@ -38,6 +39,9 @@ const serverlessConfiguration: AWS = {
     'export-env': {
       filename: '.env',
       overwrite: true,
+    },
+    jwt: {
+      secretName: '${self:service}-jwtKey',
     },
   },
 };

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { Router } from 'express';
-import { makeHealthCheckController } from '../factories/makeHealthCheckController';
+import { makeHealthCheckController } from '../factories';
 import { adaptRoute } from '../adapters/adaptRoute';
 
 export default (router: Router): void => {
