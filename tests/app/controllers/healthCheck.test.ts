@@ -1,4 +1,4 @@
-import { HealthCheckController } from '../../../src/infrastructure/controllers/HealthCheck/healthCheck.controller';
+import { HealthCheckController } from '../../../src/app/controllers/healthCheck.controller';
 
 describe('HealthCheckController', () => {
   test('should return 200', async () => {
