@@ -1,5 +1,6 @@
-import { MockUserRepository } from '../../../src/infrastructure/repositories/mockUser.repository';
-import { User, RolesEnum } from '../../../src/app/entities/user';
+import { MockUserRepository } from '../../../src/infrastructure/repositories/mock/user.repository';
+import { User } from '../../../src/app/entities/user';
+import { UserRoleEnum } from '../../../src/app/enums';
 
 describe('MockUserRepository', () => {
   test('should return a user when called with existent email', async () => {
@@ -14,6 +15,8 @@ describe('MockUserRepository', () => {
       name: 'John Doe',
       role: 'ADMIN',
       telephone: '00000000000',
+      cpf: '47550151032',
+      addresses: [],
     });
   });
 
@@ -29,6 +32,8 @@ describe('MockUserRepository', () => {
       name: 'John Doe',
       role: 'ADMIN',
       telephone: '00000000000',
+      cpf: '47550151032',
+      addresses: [],
     });
   });
 
@@ -40,8 +45,10 @@ describe('MockUserRepository', () => {
         name: 'Jane Doe',
         email: 'example@email.com',
         passwordHash: 'e10adc3949ba59abbe56e057f20f883e', // 123456
-        role: RolesEnum.ADMIN,
+        role: UserRoleEnum.ADMIN,
         telephone: '00000000000',
+        cpf: '47550151032',
+        addresses: [],
       })
     );
   });
@@ -55,8 +62,10 @@ describe('MockUserRepository', () => {
           name: 'Jane Doe',
           email: 'email@email.com',
           passwordHash: 'e10adc3949ba59abbe56e057f20f883e', // 123456
-          role: RolesEnum.ADMIN,
+          role: UserRoleEnum.ADMIN,
           telephone: '00000000000',
+          cpf: '47550151032',
+          addresses: [],
         })
       )
     ).rejects.toThrowError('User already exists');

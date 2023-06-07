@@ -10,3 +10,9 @@ export enum DogTemperamentEnum {
   SHY = 'SHY',
   ANGRY = 'ANGRY',
 }
+
+export enum UserRoleEnum {
+  WALKER = 'WALKER',
+  TUTOR = 'TUTOR',
+  ADMIN = 'ADMIN',
+}

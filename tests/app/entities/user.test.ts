@@ -1,4 +1,5 @@
-import { RolesEnum, User } from '../../../src/app/entities/user';
+import { User } from '../../../src/app/entities/user';
+import { UserRoleEnum } from '../../../src/app/enums';
 
 describe('User Entity', () => {
   test('should create a user', () => {
@@ -8,9 +9,11 @@ describe('User Entity', () => {
         email: 'any_email',
         telephone: 'any_telephone',
         passwordHash: 'any_password',
-        role: RolesEnum.ADMIN,
+        role: UserRoleEnum.ADMIN,
+        cpf: '47550151032',
+        addresses: [],
       },
-      { createdAt: 'any_date', id: 'any_id' }
+      { createdAt: new Date('2022-02-02'), id: 'any_id' }
     );
 
     expect(user.toJSON()).toStrictEqual({
@@ -20,7 +23,9 @@ describe('User Entity', () => {
       telephone: 'any_telephone',
 
       role: 'ADMIN',
-      createdAt: 'any_date',
+      createdAt: '2022-02-02T00:00:00.000Z',
+      cpf: '47550151032',
+      addresses: [],
     });
   });
 
@@ -31,16 +36,18 @@ describe('User Entity', () => {
         email: 'any_email',
         telephone: 'any_telephone',
         passwordHash: 'any_password',
-        role: RolesEnum.ADMIN,
+        role: UserRoleEnum.ADMIN,
+        cpf: '47550151032',
+        addresses: [],
       },
-      { createdAt: 'any_date', id: 'any_id' }
+      { createdAt: new Date('2022-02-02'), id: 'any_id' }
     );
 
     expect(user.id).toBe('any_id');
     expect(user.name).toBe('any_name');
     expect(user.email).toBe('any_email');
     expect(user.telephone).toBe('any_telephone');
-    expect(user.createdAt).toBe('any_date');
+    expect(user.createdAt.toISOString()).toBe('2022-02-02T00:00:00.000Z');
     expect(user.role).toBe('ADMIN');
   });
 
@@ -53,9 +60,11 @@ describe('User Entity', () => {
         email: 'any_email',
         telephone: 'any_telephone',
         passwordHash: hash,
-        role: RolesEnum.ADMIN,
+        role: UserRoleEnum.ADMIN,
+        cpf: '47550151032',
+        addresses: [],
       },
-      { createdAt: 'any_date', id: 'any_id' }
+      { createdAt: new Date('2022-02-02'), id: 'any_id' }
     );
 
     expect(user.validatePassword('any_password')).toBe(true);
@@ -68,7 +77,9 @@ describe('User Entity', () => {
         email: 'any_email',
         telephone: 'any_telephone',
         passwordHash: 'any_password',
-        role: RolesEnum.ADMIN,
+        role: UserRoleEnum.ADMIN,
+        cpf: '47550151032',
+        addresses: [],
       },
       {}
     );
@@ -81,6 +92,8 @@ describe('User Entity', () => {
 
       role: 'ADMIN',
       createdAt: expect.any(String),
+      cpf: '47550151032',
+      addresses: [],
     });
   });
 });

@@ -1,7 +1,7 @@
 import { HealthCheckController } from '../../app/controllers/healthCheck.controller';
 import { AuthenticateController } from '../../app/controllers/authenticate.controller';
 import { AuthenticateUseCase } from '../../app/useCases/authenticate.useCase';
-import { MockUserRepository } from '../../infrastructure/repositories/mockUser.repository';
+import { MockUserRepository } from '../../infrastructure/repositories/mock/user.repository';
 import { GetDogsController } from '../../app/controllers/getDogs.controller';
 
 const mockUserRepositoryInstance = new MockUserRepository();

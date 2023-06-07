@@ -14,7 +14,7 @@ model User {
   id           String       @id
   cpf          String
   name         String
-  type         UserTypeEnum
+  role         UserRoleEnum
   email        String
   telephone    String
   passwordHash String
@@ -25,16 +25,18 @@ model User {
 }
 
 model Address {
-  id         String
   street     String
   number     Int
   complement String?
   city       String
   district   String
+  state      String
+  country    String
+  zipCode    String
   UserId     String
   user       User    @relation(fields: [UserId], references: [id])
 
-  @@id([UserId, id])
+  @@id([UserId, zipCode, number])
 }
 
 model Dog {
@@ -75,7 +77,7 @@ model TripDogs {
   @@id([TripId, DogId])
 }
 
-enum UserTypeEnum {
+enum UserRoleEnum {
   TUTOR
   DOGWALKER
   ADMIN

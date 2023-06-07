@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { AuthenticateUseCase } from '../../../src/app/useCases/authenticate.useCase';
-import { MockUserRepository } from '../../../src/infrastructure/repositories/mockUser.repository';
+import { MockUserRepository } from '../../../src/infrastructure/repositories/mock/user.repository';
 
 const signSpy = jest.spyOn(jwt, 'sign');
 

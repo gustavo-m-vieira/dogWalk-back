@@ -1,6 +1,6 @@
 import { AuthenticateController } from '../../../src/app/controllers/authenticate.controller';
 import { AuthenticateUseCase } from '../../../src/app/useCases/authenticate.useCase';
-import { MockUserRepository } from '../../../src/infrastructure/repositories/mockUser.repository';
+import { MockUserRepository } from '../../../src/infrastructure/repositories/mock/user.repository';
 
 jest.mock('../../../src/app/useCases/authenticate.useCase');
 
