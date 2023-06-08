@@ -22,7 +22,7 @@ export interface IOptions {
 export class Dog {
   private props: IDog<Date>;
 
-  constructor(props: Omit<IDog<Date>, 'id'>, options: IOptions = {}) {
+  constructor(props: Omit<IDog<Date>, 'id' | 'createdAt' | 'deletedAt'>, options: IOptions = {}) {
     this.props = {
       id: options.id || uuidV4(),
       createdAt: options.createdAt || new Date(),
@@ -72,7 +72,7 @@ export class Dog {
     return this.props.tutorId;
   }
 
-  public delete(): void {
+  public remove(): void {
     this.props.deletedAt = new Date();
   }
 
