@@ -84,8 +84,10 @@ export class User {
     this.props.addresses.push(address);
   }
 
-  removeAddress(address: Address): boolean {
-    const index = this.props.addresses.findIndex((a) => a === address);
+  removeAddress(address: { zipCode: string; number: number }): boolean {
+    const index = this.props.addresses.findIndex(
+      (a) => a.zipCode === address.zipCode && a.number === address.number
+    );
 
     if (index !== -1) {
       this.props.addresses.splice(index, 1);
