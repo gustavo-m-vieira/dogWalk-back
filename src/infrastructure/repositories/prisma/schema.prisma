@@ -1,0 +1,97 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String       @id
+  cpf          String
+  name         String
+  role         UserRoleEnum
+  email        String
+  telephone    String
+  passwordHash String
+  createdAt    DateTime
+  Address      Address[]
+  Dog          Dog[]
+  Trip         Trip[]
+}
+
+model Address {
+  street     String
+  number     Int
+  complement String?
+  city       String
+  district   String
+  state      String
+  country    String
+  zipCode    String
+  UserId     String
+  user       User    @relation(fields: [UserId], references: [id])
+
+  @@id([UserId, zipCode, number])
+}
+
+model Dog {
+  id          String             @id
+  name        String
+  breed       String
+  size        DogSizeEnum
+  birthDate   DateTime
+  temperament DogTemperamentEnum
+  createdAt   DateTime
+  deletedAt   DateTime?
+  TutorId     String
+  tutor       User               @relation(fields: [TutorId], references: [id])
+  TripDogs    TripDogs[]
+}
+
+model Trip {
+  id          String             @id
+  startDate   DateTime
+  duration    Int // in minutes
+  DogWalkerId String
+  dogWalker   User               @relation(fields: [DogWalkerId], references: [id])
+  slots       Int
+  dogType     DogTemperamentEnum
+  createdAt   DateTime
+  TripDogs    TripDogs[]
+}
+
+model TripDogs {
+  TripId    String
+  DogId     String
+  createdAt DateTime
+  catched   DateTime?
+  dropped   DateTime?
+  trip      Trip      @relation(fields: [TripId], references: [id])
+  dog       Dog       @relation(fields: [DogId], references: [id])
+
+  @@id([TripId, DogId])
+}
+
+enum UserRoleEnum {
+  TUTOR
+  DOGWALKER
+  ADMIN
+}
+
+enum DogSizeEnum {
+  TINY
+  SMALL
+  MEDIUM
+  BIG
+}
+
+enum DogTemperamentEnum {
+  COOL
+  SHY
+  ANGRY
+}

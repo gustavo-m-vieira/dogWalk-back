@@ -1,5 +1,6 @@
-import { RolesEnum, User } from '../../app/entities/user';
-import { IUserRepository } from '../../app/repositories/IUserRepository';
+import { User } from '../../../app/entities/user';
+import { UserRoleEnum } from '../../../app/enums';
+import { IUserRepository } from '../../../app/repositories/IUserRepository';
 
 export class MockUserRepository implements IUserRepository {
   private users: User[];
@@ -11,40 +12,48 @@ export class MockUserRepository implements IUserRepository {
           name: 'John Doe',
           email: 'email@email.com',
           passwordHash: 'e10adc3949ba59abbe56e057f20f883e', // 123456
-          role: RolesEnum.ADMIN,
+          role: UserRoleEnum.ADMIN,
           telephone: '00000000000',
+          cpf: '47550151032',
+          addresses: [],
         },
-        { id: '1', createdAt: '2021-01-01T00:00:00.000Z' }
+        { id: '1', createdAt: new Date('2021-01-01T00:00:00.000Z') }
       ),
       new User(
         {
           name: 'John Doe',
           email: 'admin@email.com',
           passwordHash: 'e10adc3949ba59abbe56e057f20f883e', // 123456
-          role: RolesEnum.ADMIN,
+          role: UserRoleEnum.ADMIN,
           telephone: '00000000000',
+          cpf: '47550151032',
+          addresses: [],
         },
-        { id: '2', createdAt: '2021-01-01T00:00:00.000Z' }
+        { id: '2', createdAt: new Date('2021-01-01T00:00:00.000Z') }
       ),
       new User(
         {
           name: 'John Doe',
           email: 'tutor@email.com',
           passwordHash: 'e10adc3949ba59abbe56e057f20f883e', // 123456
-          role: RolesEnum.TUTOR,
+          role: UserRoleEnum.TUTOR,
           telephone: '00000000000',
+          cpf: '47550151032',
+          addresses: [],
         },
-        { id: '3', createdAt: '2021-01-01T00:00:00.000Z' }
+        { id: '3', createdAt: new Date('2021-01-01T00:00:00.000Z') }
       ),
       new User(
         {
           name: 'John Doe',
           email: 'walker@email.com',
           passwordHash: 'e10adc3949ba59abbe56e057f20f883e', // 123456
-          role: RolesEnum.WALKER,
+          role: UserRoleEnum.WALKER,
           telephone: '00000000000',
+          cpf: '47550151032',
+          addresses: [],
         },
-        { id: '4', createdAt: '2021-01-01T00:00:00.000Z' }
+        { id: '4', createdAt: new Date('2021-01-01T00:00:00.000Z') }
       ),
     ];
   }

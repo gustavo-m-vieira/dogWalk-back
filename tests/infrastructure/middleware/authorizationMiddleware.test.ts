@@ -1,9 +1,9 @@
-import { RolesEnum } from '../../../src/app/entities/user';
+import { UserRoleEnum } from '../../../src/app/enums';
 import { AuthorizationMiddleware } from '../../../src/infrastructure/middleware/authorization.middleware';
 
 describe('AuthorizationMiddleware', () => {
   test('should return 401 if user is not authenticated', async () => {
-    const authorizationMiddleware = new AuthorizationMiddleware([RolesEnum.ADMIN]);
+    const authorizationMiddleware = new AuthorizationMiddleware([UserRoleEnum.ADMIN]);
 
     const response = await authorizationMiddleware.execute(
       {
@@ -17,7 +17,7 @@ describe('AuthorizationMiddleware', () => {
   });
 
   test('should return 403 if user is not authorized', async () => {
-    const authorizationMiddleware = new AuthorizationMiddleware([RolesEnum.ADMIN]);
+    const authorizationMiddleware = new AuthorizationMiddleware([UserRoleEnum.ADMIN]);
 
     const response = await authorizationMiddleware.execute(
       {
@@ -37,7 +37,7 @@ describe('AuthorizationMiddleware', () => {
   });
 
   test('should return undefined if user is authorized', async () => {
-    const authorizationMiddleware = new AuthorizationMiddleware([RolesEnum.ADMIN]);
+    const authorizationMiddleware = new AuthorizationMiddleware([UserRoleEnum.ADMIN]);
 
     const response = await authorizationMiddleware.execute(
       {

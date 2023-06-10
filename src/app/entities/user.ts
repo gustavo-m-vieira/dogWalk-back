@@ -1,31 +1,40 @@
 import md5 from 'md5';
 import { v4 as uuidV4 } from 'uuid';
+import { UserRoleEnum } from '../enums';
 
-export enum RolesEnum {
-  ADMIN = 'ADMIN',
-  WALKER = 'WALKER',
-  TUTOR = 'TUTOR',
+interface Address {
+  street: string;
+  number: number;
+  complement?: string;
+  city: string;
+  district: string;
+  state: string;
+  country: string;
+  zipCode: string;
 }
 
-interface IUser {
+interface IUser<DateType> {
   id: string;
+  cpf: string;
   name: string;
+  role: UserRoleEnum;
   email: string;
   telephone: string;
   passwordHash: string;
-  role: RolesEnum;
-  createdAt: string;
+  createdAt: DateType;
+  addresses: Array<Address>;
 }
 
 interface IOptions {
-  createdAt?: string;
+  createdAt?: Date;
   id?: string;
 }
 
 export class User {
-  private props: IUser;
+  private props: IUser<Date>;
 
-  constructor(props: Omit<IUser, 'id' | 'createdAt'>, { createdAt, id }: IOptions = {}) {
+  constructor(props: Omit<IUser<Date>, 'id' | 'createdAt'>, { createdAt, id }: IOptions = {}) {
+    // TODO: add validation
     this.props = {
       name: props.name,
       email: props.email,
@@ -33,7 +42,9 @@ export class User {
       passwordHash: props.passwordHash,
       id: id || uuidV4(),
       role: props.role,
-      createdAt: createdAt || new Date().toISOString(),
+      createdAt: createdAt || new Date(),
+      cpf: props.cpf,
+      addresses: props.addresses,
     };
   }
 
@@ -53,23 +64,58 @@ export class User {
     return this.props.telephone;
   }
 
-  get createdAt(): string {
+  get createdAt(): Date {
     return this.props.createdAt;
   }
 
-  get role(): RolesEnum {
+  get role(): UserRoleEnum {
     return this.props.role;
+  }
+
+  get cpf(): string {
+    return this.props.cpf;
+  }
+
+  get addresses(): Array<Address> {
+    return this.props.addresses;
+  }
+
+  addAddress(address: Address): void {
+    this.props.addresses.push(address);
+  }
+
+  removeAddress(address: { zipCode: string; number: number }): boolean {
+    const index = this.props.addresses.findIndex(
+      (a) => a.zipCode === address.zipCode && a.number === address.number
+    );
+
+    if (index !== -1) {
+      this.props.addresses.splice(index, 1);
+      return true;
+    }
+
+    return false;
+  }
+
+  changeEmail(email: string): void {
+    // TODO: add email validation
+    this.props.email = email;
+  }
+
+  changeTelephone(telephone: string): void {
+    // TODO: add telephone validation
+    this.props.telephone = telephone;
   }
 
   validatePassword(password: string): boolean {
     return md5(password) === this.props.passwordHash;
   }
 
-  toJSON(): Omit<IUser, 'passwordHash'> {
+  toJSON(): Omit<IUser<string>, 'passwordHash'> {
     // eslint-disable-next-line no-unused-vars
     const { passwordHash, ...props } = this.props;
 
-    return props;
+    return { ...props, createdAt: this.props.createdAt.toISOString() };
   }
 
   static generatePasswordHash(password: string): string {
