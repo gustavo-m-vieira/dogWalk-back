@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { User } from '../entities/user';
-import { IUserRepository } from '../repositories/IUserRepository';
+import { IUserRepository } from '../repositories/IUser.repository';
 
 export class AuthenticateUseCase {
   constructor(private readonly jwtKey: string, private readonly userRepository: IUserRepository) {}

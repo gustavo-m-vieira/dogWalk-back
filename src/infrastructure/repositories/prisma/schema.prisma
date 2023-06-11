@@ -13,16 +13,18 @@ model Users {
   cpf          String
   name         String
   role         UserRoleEnum
-  email        String
-  telephone    String
+  email        String       @unique
+  telephone    String       @unique
   passwordHash String
   createdAt    DateTime
+  deletedAt    DateTime?
   Address      Addresses[]
   Dog          Dogs[]
   Trip         Trips[]
 }
 
 model Addresses {
+  id         String    @id
   street     String
   number     Int
   complement String?
@@ -32,9 +34,9 @@ model Addresses {
   country    String
   zipCode    String
   UserId     String
-  user       Users   @relation(fields: [UserId], references: [id])
-
-  @@id([UserId, zipCode, number])
+  user       Users     @relation(fields: [UserId], references: [id])
+  createdAt  DateTime
+  deletedAt  DateTime?
 }
 
 model Dogs {
