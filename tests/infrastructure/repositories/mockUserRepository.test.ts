@@ -17,6 +17,7 @@ describe('MockUserRepository', () => {
       telephone: '00000000000',
       cpf: '47550151032',
       addresses: [],
+      deletedAt: undefined,
     });
   });
 
@@ -34,6 +35,7 @@ describe('MockUserRepository', () => {
       telephone: '00000000000',
       cpf: '47550151032',
       addresses: [],
+      deletedAt: undefined,
     });
   });
 

@@ -15,12 +15,9 @@ const serverlessConfiguration: AWS = {
     architecture: 'arm64',
     environment: {
       NODE_ENV: 'production',
-      DATABASE_NAME: '${self:custom.database.name}',
-      DATABASE_USERNAME: '${self:custom.database.username}',
-      DATABASE_PASSWORD:
-        '${ssm:/aws/reference/secretsmanager/${self:custom.database.secretName}, ""}',
-      DATABASE_ENDPOINT: '${self:custom.database.endpoint, ""}',
       JWT_KEY: '${ssm:/aws/reference/secretsmanager/${self:custom.jwt.secretName}, ""}',
+      DATABASE_URL:
+        'postgresql://${self:custom.database.username}:${self:custom.database.password}@${self:custom.database.host}:5432/${self:custom.database.name}?schema=public',
     },
   },
   resources: { ...resources },
@@ -30,11 +27,13 @@ const serverlessConfiguration: AWS = {
       name: 'dogWalkerDB',
       username: 'dogWalkerAdmin',
       secretName: '${self:service}-database',
+      password: '${ssm:/aws/reference/secretsmanager/${self:custom.database.secretName}, ""}',
       instanceClass: 'db.t4g.micro',
       allocatedStorage: 20,
       endpoint: {
         'Fn::ImportValue': '${self:service}-RDSInstanceEndpoint',
       },
+      host: 'dogwalkerdb.cdoe9jzbfdgk.us-east-1.rds.amazonaws.com',
     },
     'export-env': {
       filename: '.env',

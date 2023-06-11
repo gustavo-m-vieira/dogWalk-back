@@ -1,6 +1,6 @@
 import { User } from '../../../app/entities/user';
 import { UserRoleEnum } from '../../../app/enums';
-import { IUserRepository } from '../../../app/repositories/IUserRepository';
+import { IUserRepository } from '../../../app/repositories/IUser.repository';
 
 export class MockUserRepository implements IUserRepository {
   private users: User[];

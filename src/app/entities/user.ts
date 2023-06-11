@@ -1,17 +1,7 @@
 import md5 from 'md5';
 import { v4 as uuidV4 } from 'uuid';
 import { UserRoleEnum } from '../enums';
-
-interface Address {
-  street: string;
-  number: number;
-  complement?: string;
-  city: string;
-  district: string;
-  state: string;
-  country: string;
-  zipCode: string;
-}
+import { Address } from './address';
 
 interface IUser<DateType> {
   id: string;
@@ -22,18 +12,23 @@ interface IUser<DateType> {
   telephone: string;
   passwordHash: string;
   createdAt: DateType;
+  deletedAt?: DateType;
   addresses: Array<Address>;
 }
 
 interface IOptions {
   createdAt?: Date;
   id?: string;
+  deletedAt?: Date;
 }
 
 export class User {
   private props: IUser<Date>;
 
-  constructor(props: Omit<IUser<Date>, 'id' | 'createdAt'>, { createdAt, id }: IOptions = {}) {
+  constructor(
+    props: Omit<IUser<Date>, 'id' | 'createdAt' | 'deletedAt'>,
+    { createdAt, id, deletedAt }: IOptions = {}
+  ) {
     // TODO: add validation
     this.props = {
       name: props.name,
@@ -43,6 +38,7 @@ export class User {
       id: id || uuidV4(),
       role: props.role,
       createdAt: createdAt || new Date(),
+      deletedAt,
       cpf: props.cpf,
       addresses: props.addresses,
     };
@@ -80,14 +76,20 @@ export class User {
     return this.props.addresses;
   }
 
+  get passwordHash(): string {
+    return this.props.passwordHash;
+  }
+
+  get deletedAt(): Date | undefined {
+    return this.props.deletedAt;
+  }
+
   addAddress(address: Address): void {
     this.props.addresses.push(address);
   }
 
-  removeAddress(address: { zipCode: string; number: number }): boolean {
-    const index = this.props.addresses.findIndex(
-      (a) => a.zipCode === address.zipCode && a.number === address.number
-    );
+  removeAddress(id: string): boolean {
+    const index = this.props.addresses.findIndex((a) => a.id === id);
 
     if (index !== -1) {
       this.props.addresses.splice(index, 1);
@@ -115,7 +117,11 @@ export class User {
     // eslint-disable-next-line no-unused-vars
     const { passwordHash, ...props } = this.props;
 
-    return { ...props, createdAt: this.props.createdAt.toISOString() };
+    return {
+      ...props,
+      createdAt: this.props.createdAt.toISOString(),
+      deletedAt: this.props.deletedAt?.toISOString(),
+    };
   }
 
   static generatePasswordHash(password: string): string {
