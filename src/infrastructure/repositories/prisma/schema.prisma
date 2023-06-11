@@ -1,16 +1,14 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-generator client {
-  provider = "prisma-client-js"
-}
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model User {
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-arm64-openssl-1.0.x"]
+}
+
+model Users {
   id           String       @id
   cpf          String
   name         String
@@ -19,12 +17,12 @@ model User {
   telephone    String
   passwordHash String
   createdAt    DateTime
-  Address      Address[]
-  Dog          Dog[]
-  Trip         Trip[]
+  Address      Addresses[]
+  Dog          Dogs[]
+  Trip         Trips[]
 }
 
-model Address {
+model Addresses {
   street     String
   number     Int
   complement String?
@@ -34,12 +32,12 @@ model Address {
   country    String
   zipCode    String
   UserId     String
-  user       User    @relation(fields: [UserId], references: [id])
+  user       Users   @relation(fields: [UserId], references: [id])
 
   @@id([UserId, zipCode, number])
 }
 
-model Dog {
+model Dogs {
   id          String             @id
   name        String
   breed       String
@@ -49,30 +47,30 @@ model Dog {
   createdAt   DateTime
   deletedAt   DateTime?
   TutorId     String
-  tutor       User               @relation(fields: [TutorId], references: [id])
-  TripDogs    TripDogs[]
+  tutor       Users              @relation(fields: [TutorId], references: [id])
+  TripsDogs   TripsDogs[]
 }
 
-model Trip {
+model Trips {
   id          String             @id
   startDate   DateTime
   duration    Int // in minutes
   DogWalkerId String
-  dogWalker   User               @relation(fields: [DogWalkerId], references: [id])
+  dogWalker   Users              @relation(fields: [DogWalkerId], references: [id])
   slots       Int
   dogType     DogTemperamentEnum
   createdAt   DateTime
-  TripDogs    TripDogs[]
+  TripsDogs   TripsDogs[]
 }
 
-model TripDogs {
+model TripsDogs {
   TripId    String
   DogId     String
   createdAt DateTime
   catched   DateTime?
   dropped   DateTime?
-  trip      Trip      @relation(fields: [TripId], references: [id])
-  dog       Dog       @relation(fields: [DogId], references: [id])
+  trip      Trips     @relation(fields: [TripId], references: [id])
+  dog       Dogs      @relation(fields: [DogId], references: [id])
 
   @@id([TripId, DogId])
 }

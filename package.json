@@ -10,7 +10,10 @@
     "test:verbose": "jest --passWithNoTests --runInBand",
     "test:coverage": "npm test -- --coverage",
     "commit": "git-cz",
-    "prepare": "husky install"
+    "prepare": "husky install && npx prisma generate",
+    "prisma:build": "npx prisma generate",
+    "prisma:migrate:dry": "sls export-env -s dev && npx prisma migrate dev --create-only",
+    "prisma:migrate": "sls export-env -s dev && npx prisma migrate dev"
   },
   "keywords": [],
   "author": "Gustavo M. Vieira",
@@ -22,6 +25,9 @@
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "prisma": {
+    "schema": "./src/infrastructure/repositories/prisma/schema.prisma"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.16.5",
