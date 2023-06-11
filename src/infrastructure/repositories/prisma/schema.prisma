@@ -14,7 +14,7 @@ model Users {
   name         String
   role         UserRoleEnum
   email        String       @unique
-  telephone    String       @unique
+  telephone    String
   passwordHash String
   createdAt    DateTime
   deletedAt    DateTime?
