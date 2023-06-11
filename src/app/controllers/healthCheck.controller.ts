@@ -5,6 +5,7 @@ export class HealthCheckController implements IController {
   async handle(): Promise<any> {
     return {
       statusCode: 200,
+      body: 'OK',
     };
   }
 }
