@@ -5,21 +5,25 @@ interface ITrip<DateType> {
   startDate: DateType;
   duration: number;
   createdAt: DateType;
+  deletedAt?: DateType;
   slots: number;
   dogType: DogTemperamentEnum;
-  walkerId: number;
-  dogs: number[];
+  walkerId: string;
+  dogs: string[];
 }
 
 interface IOptions {
   createdAt?: Date;
   id?: string;
+  deletedAt?: Date;
 }
 
 export class Trip {
   private props: ITrip<Date>;
 
-  constructor(props: Omit<ITrip<Date>, 'id' | 'createdAt'>, options: IOptions = {}) {
+  private previousDogs: string[] = [];
+
+  constructor(props: Omit<ITrip<Date>, 'id' | 'createdAt' | 'deletedAt'>, options: IOptions = {}) {
     this.props = {
       startDate: props.startDate,
       duration: props.duration,
@@ -29,7 +33,10 @@ export class Trip {
       dogs: props.dogs,
       id: options.id || 'any_id',
       createdAt: options.createdAt || new Date(),
+      deletedAt: options.deletedAt,
     };
+
+    this.previousDogs = [...this.props.dogs];
   }
 
   get id(): string {
@@ -56,16 +63,51 @@ export class Trip {
     return this.props.dogType;
   }
 
-  get walkerId(): number {
+  get walkerId(): string {
     return this.props.walkerId;
   }
 
-  get dogs(): number[] {
+  get dogs(): string[] {
     return this.props.dogs;
   }
 
   get createdAt(): Date {
     return this.props.createdAt;
+  }
+
+  get deletedAt(): Date | undefined {
+    return this.props.deletedAt;
+  }
+
+  delete(): Boolean {
+    if (this.deletedAt) return false;
+
+    this.props.deletedAt = new Date();
+    return true;
+  }
+
+  addDog(dogId: string): Boolean {
+    if (this.dogs.includes(dogId)) return false;
+
+    this.dogs.push(dogId);
+    return true;
+  }
+
+  removeDog(dogId: string): Boolean {
+    if (!this.dogs.includes(dogId)) return false;
+
+    this.dogs.splice(this.dogs.indexOf(dogId), 1);
+    return true;
+  }
+
+  dogsDiff(): { added: string[]; removed: string[] } {
+    const added = this.dogs.filter((dog) => !this.previousDogs.includes(dog));
+    const removed = this.previousDogs.filter((dog) => !this.dogs.includes(dog));
+
+    return {
+      added,
+      removed,
+    };
   }
 
   toJSON(): ITrip<string> {
@@ -78,6 +120,7 @@ export class Trip {
       walkerId: this.walkerId,
       dogs: this.dogs,
       createdAt: this.createdAt.toISOString(),
+      deletedAt: this.deletedAt?.toISOString(),
     };
   }
 }
