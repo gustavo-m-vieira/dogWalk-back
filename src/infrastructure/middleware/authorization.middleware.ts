@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
-import { User, RolesEnum } from '../../app/entities/user';
+import { User } from '../../app/entities/user';
+import { UserRoleEnum } from '../../app/enums';
 
 export class AuthorizationMiddleware {
-  constructor(private allowedRoles: Array<RolesEnum>) {}
+  constructor(private allowedRoles: Array<UserRoleEnum>) {}
 
   // eslint-disable-next-line consistent-return
   async execute(
