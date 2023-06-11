@@ -62,6 +62,7 @@ model Trips {
   slots       Int
   dogType     DogTemperamentEnum
   createdAt   DateTime
+  deletedAt   DateTime?
   TripsDogs   TripsDogs[]
 }
 
