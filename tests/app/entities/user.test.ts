@@ -55,6 +55,8 @@ describe('User Entity', () => {
     expect(user.telephone).toBe('any_telephone');
     expect(user.createdAt.toISOString()).toBe('2022-02-02T00:00:00.000Z');
     expect(user.role).toBe('ADMIN');
+    expect(user.passwordHash).toBe('any_password');
+    expect(user.deletedAt).toBe(undefined);
   });
 
   test('generatePasswordHash should generate a password hash', () => {
