@@ -38,7 +38,7 @@ export class CreateDogController implements IController {
 
       return {
         statusCode: 201,
-        body: dog,
+        body: dog.toJSON(),
       };
     } catch (error) {
       console.error(error);
