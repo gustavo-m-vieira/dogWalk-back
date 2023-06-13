@@ -14,8 +14,8 @@ interface IBody {
 export class CreateUserController implements IController {
   constructor(private createUserUseCase: CreateUserUseCase) {}
 
-  async handle(request: IRequest): Promise<IResponse> {
-    const { name, email, cpf, telephone, password, role } = request.body as IBody;
+  async handle(request: IRequest<IBody>): Promise<IResponse> {
+    const { name, email, cpf, telephone, password, role } = request.body;
 
     if (!name || !email || !cpf || !telephone || !password || !role) {
       return {
