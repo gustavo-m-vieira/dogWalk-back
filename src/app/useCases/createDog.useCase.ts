@@ -1,4 +1,4 @@
-import { ICreateDogDTO } from '../dto/createDog.cto';
+import { ICreateDogDTO } from '../dto/createDog.dto';
 import { Dog } from '../entities/dog';
 import type { IDogRepository } from '../repositories/IDog.repository';
 

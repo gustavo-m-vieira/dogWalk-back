@@ -9,6 +9,8 @@ import { AuthenticateUseCase } from '../../app/useCases/authenticate.useCase';
 import { CreateUserUseCase } from '../../app/useCases/createUser.useCase';
 import { PrismaDogRepository } from '../../infrastructure/repositories/prisma/dog.repository';
 import { CreateDogUseCase } from '../../app/useCases/createDog.useCase';
+import { AddAddressUseCase } from '../../app/useCases/addAddress.useCase';
+import { AddAddressController } from '../../app/controllers/addAddress.controller';
 
 const prisma = new PrismaClient();
 
@@ -42,4 +44,10 @@ export function makeCreateDogController() {
   const createDogUseCase = new CreateDogUseCase(dogRepository);
   const createDogController = new CreateDogController(createDogUseCase);
   return createDogController;
+}
+
+export function makeAddAddressController() {
+  const addAddressUseCase = new AddAddressUseCase(userRepository);
+  const addAddressController = new AddAddressController(addAddressUseCase);
+  return addAddressController;
 }
