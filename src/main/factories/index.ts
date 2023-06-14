@@ -3,13 +3,17 @@ import { PrismaUserRepository } from '../../infrastructure/repositories/prisma/u
 import { HealthCheckController } from '../../app/controllers/healthCheck.controller';
 import { AuthenticateController } from '../../app/controllers/authenticate.controller';
 import { CreateUserController } from '../../app/controllers/createUser.controller';
+import { CreateDogController } from '../../app/controllers/createDog.controller';
 import { GetDogsController } from '../../app/controllers/getDogs.controller';
 import { AuthenticateUseCase } from '../../app/useCases/authenticate.useCase';
 import { CreateUserUseCase } from '../../app/useCases/createUser.useCase';
+import { PrismaDogRepository } from '../../infrastructure/repositories/prisma/dog.repository';
+import { CreateDogUseCase } from '../../app/useCases/createDog.useCase';
 
 const prisma = new PrismaClient();
 
 const userRepository = new PrismaUserRepository(prisma);
+const dogRepository = new PrismaDogRepository(prisma);
 
 export function makeHealthCheckController() {
   const healthCheckController = new HealthCheckController();
@@ -32,4 +36,10 @@ export function makeCreateUserController() {
   const createUserUseCase = new CreateUserUseCase(userRepository);
   const createUserController = new CreateUserController(createUserUseCase);
   return createUserController;
+}
+
+export function makeCreateDogController() {
+  const createDogUseCase = new CreateDogUseCase(dogRepository);
+  const createDogController = new CreateDogController(createDogUseCase);
+  return createDogController;
 }

@@ -59,18 +59,41 @@ export class PrismaDogRepository implements IDogRepository {
   }
 
   async save(dog: Dog): Promise<void> {
-    await this.prisma.dogs.upsert({
-      where: {
-        id: dog.id,
-      },
-      create: {
-        ...dog.toJSON(),
-        TutorId: dog.tutorId,
-      },
-      update: {
-        ...dog.toJSON(),
-        TutorId: dog.tutorId,
-      },
-    });
+    const { tutorId, id, birthDate, breed, createdAt, name, size, temperament, deletedAt } =
+      dog.toJSON();
+
+    try {
+      await this.prisma.dogs.upsert({
+        where: {
+          id: dog.id,
+        },
+        create: {
+          id,
+          birthDate,
+          breed,
+          createdAt,
+          name,
+          size,
+          temperament,
+          TutorId: tutorId,
+        },
+        update: {
+          birthDate,
+          breed,
+          createdAt,
+          name,
+          size,
+          temperament,
+          deletedAt,
+          TutorId: tutorId,
+        },
+      });
+    } catch (error) {
+      if ((error as Error).message.includes('Dogs_TutorId_fkey')) {
+        throw new Error('Tutor not found');
+      }
+
+      throw new Error('Unexpected error');
+    }
   }
 }
