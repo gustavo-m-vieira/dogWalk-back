@@ -1,16 +1,16 @@
 import { User } from '../entities/user';
 
-export interface IRequest<BodyType = any | undefined> {
+export interface IRequest<
+  BodyType = any | undefined,
+  PathType = any | undefined,
+  QueryType = any | undefined
+> {
   body: BodyType;
   headers: {
     [key: string]: string | undefined;
   };
-  pathParameters?: {
-    [key: string]: string;
-  };
-  queryStringParameters?: {
-    [key: string]: string;
-  };
+  pathParameters: PathType;
+  queryStringParameters: QueryType;
   requestContext?: {
     authorizer: User;
   };
