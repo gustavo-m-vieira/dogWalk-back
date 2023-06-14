@@ -10,6 +10,7 @@ interface ITrip<DateType> {
   dogType: DogTemperamentEnum;
   walkerId: string;
   dogs: string[];
+  addressId: string;
 }
 
 interface IOptions {
@@ -32,6 +33,7 @@ export class Trip {
       walkerId: props.walkerId,
       dogs: props.dogs,
       id: options.id || 'any_id',
+      addressId: props.addressId,
       createdAt: options.createdAt || new Date(),
       deletedAt: options.deletedAt,
     };
@@ -79,6 +81,10 @@ export class Trip {
     return this.props.deletedAt;
   }
 
+  get addressId(): string {
+    return this.props.addressId;
+  }
+
   delete(): Boolean {
     if (this.deletedAt) return false;
 
@@ -119,6 +125,7 @@ export class Trip {
       dogType: this.dogType,
       walkerId: this.walkerId,
       dogs: this.dogs,
+      addressId: this.addressId,
       createdAt: this.createdAt.toISOString(),
       deletedAt: this.deletedAt?.toISOString(),
     };

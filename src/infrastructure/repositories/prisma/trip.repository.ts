@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { ITripRepository } from '../../../app/repositories/ITrip.repository';
+import { IOptions, ITripRepository } from '../../../app/repositories/ITrip.repository';
 import { Trip } from '../../../app/entities/trip';
 import { DogTemperamentEnum as InnerDogTemperamentEnum } from '../../../app/enums';
 
@@ -30,6 +30,7 @@ export class PrismaTripRepository implements ITripRepository {
         slots: trip.slots,
         startDate: trip.startDate,
         dogs: trip.TripsDogs.map((tripDog) => tripDog.DogId),
+        addressId: trip.addressesId,
       },
       {
         createdAt: trip.createdAt,
@@ -39,10 +40,13 @@ export class PrismaTripRepository implements ITripRepository {
     );
   }
 
-  async findByWalkerId(walkerId: string): Promise<Trip[]> {
+  async findByWalkerId(walkerId: string, options?: IOptions): Promise<Trip[]> {
+    const { startDate } = options || {};
+
     const trips = await this.prisma.trips.findMany({
       where: {
         DogWalkerId: walkerId,
+        ...(startDate && { startDate }),
       },
       include: {
         TripsDogs: {
@@ -63,6 +67,7 @@ export class PrismaTripRepository implements ITripRepository {
             slots: trip.slots,
             startDate: trip.startDate,
             dogs: trip.TripsDogs.map((tripDog) => tripDog.DogId),
+            addressId: trip.addressesId,
           },
           {
             createdAt: trip.createdAt,
@@ -73,7 +78,9 @@ export class PrismaTripRepository implements ITripRepository {
     );
   }
 
-  async findByDogId(dogId: string): Promise<Trip[]> {
+  async findByDogId(dogId: string, options?: IOptions): Promise<Trip[]> {
+    const { startDate } = options || {};
+
     const trips = await this.prisma.trips.findMany({
       where: {
         TripsDogs: {
@@ -81,6 +88,7 @@ export class PrismaTripRepository implements ITripRepository {
             DogId: dogId,
           },
         },
+        ...(startDate && { startDate }),
       },
       include: {
         TripsDogs: {
@@ -101,6 +109,49 @@ export class PrismaTripRepository implements ITripRepository {
             slots: trip.slots,
             startDate: trip.startDate,
             dogs: trip.TripsDogs.map((tripDog) => tripDog.DogId),
+            addressId: trip.addressesId,
+          },
+          {
+            createdAt: trip.createdAt,
+            deletedAt: trip.deletedAt || undefined,
+            id: trip.id,
+          }
+        )
+    );
+  }
+
+  async findByZipCode(zipCode: string, options?: IOptions): Promise<Trip[]> {
+    const { startDate } = options || {};
+
+    const trips = await this.prisma.trips.findMany({
+      where: {
+        address: {
+          zipCode: {
+            startsWith: zipCode.slice(0, 3),
+          },
+        },
+        ...(startDate && { startDate }),
+      },
+      include: {
+        TripsDogs: {
+          select: {
+            DogId: true,
+          },
+        },
+      },
+    });
+
+    return trips.map(
+      (trip) =>
+        new Trip(
+          {
+            walkerId: trip.DogWalkerId,
+            dogType: trip.dogType as InnerDogTemperamentEnum,
+            duration: trip.duration,
+            slots: trip.slots,
+            startDate: trip.startDate,
+            dogs: trip.TripsDogs.map((tripDog) => tripDog.DogId),
+            addressId: trip.addressesId,
           },
           {
             createdAt: trip.createdAt,
@@ -126,6 +177,7 @@ export class PrismaTripRepository implements ITripRepository {
         startDate: trip.startDate,
         createdAt: trip.createdAt,
         deletedAt: trip.deletedAt,
+        addressesId: trip.addressId,
         TripsDogs: {
           deleteMany: removed.map((dogId) => ({
             DogId: dogId,
@@ -147,6 +199,7 @@ export class PrismaTripRepository implements ITripRepository {
         startDate: trip.startDate,
         createdAt: trip.createdAt,
         deletedAt: trip.deletedAt,
+        addressesId: trip.addressId,
         TripsDogs: {
           createMany: {
             data: trip.dogs.map((dogId) => ({

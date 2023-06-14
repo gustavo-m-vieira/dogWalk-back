@@ -15,6 +15,7 @@ export class MockTripRepository implements ITripRepository {
           slots: 2,
           startDate: new Date('2021-01-01T00:00:00.000Z'),
           dogs: ['1'],
+          addressId: '1',
         },
         { id: '1', createdAt: new Date('2021-01-01T00:00:00.000Z') }
       ),
@@ -26,6 +27,7 @@ export class MockTripRepository implements ITripRepository {
           slots: 2,
           startDate: new Date('2021-01-01T00:00:00.000Z'),
           dogs: ['1'],
+          addressId: '1',
         },
         { id: '2', createdAt: new Date('2021-01-01T00:00:00.000Z') }
       ),
@@ -37,6 +39,7 @@ export class MockTripRepository implements ITripRepository {
           slots: 2,
           startDate: new Date('2021-01-01T00:00:00.000Z'),
           dogs: ['1'],
+          addressId: '1',
         },
         { id: '3', createdAt: new Date('2021-01-01T00:00:00.000Z') }
       ),
@@ -48,6 +51,7 @@ export class MockTripRepository implements ITripRepository {
           slots: 2,
           startDate: new Date('2021-01-01T00:00:00.000Z'),
           dogs: ['1'],
+          addressId: '1',
         },
         { id: '4', createdAt: new Date('2021-01-01T00:00:00.000Z') }
       ),
@@ -66,6 +70,10 @@ export class MockTripRepository implements ITripRepository {
     const trips = this.trips.filter((trip) => trip.walkerId === walkerId);
 
     return trips;
+  }
+
+  async findByZipCode(): Promise<Trip[]> {
+    return this.trips;
   }
 
   async save(trip: Trip): Promise<void> {

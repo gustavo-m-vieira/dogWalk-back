@@ -37,6 +37,7 @@ model Addresses {
   user       Users     @relation(fields: [UserId], references: [id])
   createdAt  DateTime
   deletedAt  DateTime?
+  Trips      Trips[]
 }
 
 model Dogs {
@@ -63,7 +64,9 @@ model Trips {
   dogType     DogTemperamentEnum
   createdAt   DateTime
   deletedAt   DateTime?
+  address     Addresses          @relation(fields: [addressesId], references: [id])
   TripsDogs   TripsDogs[]
+  addressesId String
 }
 
 model TripsDogs {

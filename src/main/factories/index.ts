@@ -11,11 +11,15 @@ import { PrismaDogRepository } from '../../infrastructure/repositories/prisma/do
 import { CreateDogUseCase } from '../../app/useCases/createDog.useCase';
 import { AddAddressUseCase } from '../../app/useCases/addAddress.useCase';
 import { AddAddressController } from '../../app/controllers/addAddress.controller';
+import { PrismaTripRepository } from '../../infrastructure/repositories/prisma/trip.repository';
+import { GetTripsController } from '../../app/controllers/getTrips.controller';
+import { GetTripsUseCase } from '../../app/useCases/getTrips.useCase';
 
 const prisma = new PrismaClient();
 
 const userRepository = new PrismaUserRepository(prisma);
 const dogRepository = new PrismaDogRepository(prisma);
+const tripRepository = new PrismaTripRepository(prisma);
 
 export function makeHealthCheckController() {
   const healthCheckController = new HealthCheckController();
@@ -50,4 +54,10 @@ export function makeAddAddressController() {
   const addAddressUseCase = new AddAddressUseCase(userRepository);
   const addAddressController = new AddAddressController(addAddressUseCase);
   return addAddressController;
+}
+
+export function makeGetTripsController() {
+  const getTripsUseCase = new GetTripsUseCase(tripRepository);
+  const getTripsController = new GetTripsController(getTripsUseCase);
+  return getTripsController;
 }
