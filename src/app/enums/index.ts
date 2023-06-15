@@ -12,7 +12,7 @@ export enum DogTemperamentEnum {
 }
 
 export enum UserRoleEnum {
-  WALKER = 'WALKER',
+  WALKER = 'DOGWALKER',
   TUTOR = 'TUTOR',
   ADMIN = 'ADMIN',
 }
