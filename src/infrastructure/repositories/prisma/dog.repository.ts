@@ -58,6 +58,27 @@ export class PrismaDogRepository implements IDogRepository {
     );
   }
 
+  async findAll(): Promise<Dog[]> {
+    const dogs = await this.prisma.dogs.findMany();
+
+    return dogs.map(
+      (dog) =>
+        new Dog(
+          {
+            ...dog,
+            tutorId: dog.TutorId,
+            size: dog.size as InnerDogSizeEnum,
+            temperament: dog.temperament as InnerDogTemperamentEnum,
+          },
+          {
+            createdAt: dog.createdAt,
+            deletedAt: dog.deletedAt || undefined,
+            id: dog.id,
+          }
+        )
+    );
+  }
+
   async save(dog: Dog): Promise<void> {
     const { tutorId, id, birthDate, breed, createdAt, name, size, temperament, deletedAt } =
       dog.toJSON();

@@ -5,6 +5,7 @@ import { AuthenticateController } from '../../app/controllers/authenticate.contr
 import { CreateUserController } from '../../app/controllers/createUser.controller';
 import { CreateDogController } from '../../app/controllers/createDog.controller';
 import { GetDogsController } from '../../app/controllers/getDogs.controller';
+import { GetDogsUseCase } from '../../app/useCases/getDogs.useCase';
 import { AuthenticateUseCase } from '../../app/useCases/authenticate.useCase';
 import { CreateUserUseCase } from '../../app/useCases/createUser.useCase';
 import { PrismaDogRepository } from '../../infrastructure/repositories/prisma/dog.repository';
@@ -34,7 +35,8 @@ export function makeAuthenticateController() {
 }
 
 export function makeGetDogsController() {
-  const getDogsController = new GetDogsController();
+  const getDogsUseCase = new GetDogsUseCase(dogRepository);
+  const getDogsController = new GetDogsController(getDogsUseCase);
   return getDogsController;
 }
 

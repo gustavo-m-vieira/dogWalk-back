@@ -1,15 +1,17 @@
+import { GetDogsUseCase } from '../useCases/getDogs.useCase';
 import type { IController, IResponse } from './IController';
 
 export class GetDogsController implements IController {
-  // eslint-disable-next-line @typescript-eslint/no-useless-constructor, @typescript-eslint/no-empty-function
-  constructor() {}
+  constructor(private readonly listDogsUseCase: GetDogsUseCase) {}
 
-  // eslint-disable-next-line class-methods-use-this
   async handle(): Promise<IResponse> {
+    const dogs = await this.listDogsUseCase.execute();
+
     return {
       statusCode: 200,
       body: {
         message: 'Dogs fetched successfully',
+        dogs,
       },
     };
   }
