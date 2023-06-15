@@ -25,6 +25,10 @@ class MockDogRepository implements IDogRepository {
     if (this.success === 0) throw new Error('Tutor not found');
     return undefined;
   }
+
+  async findAll() {
+    return [];
+  }
 }
 
 const dogRepository = new MockDogRepository();
