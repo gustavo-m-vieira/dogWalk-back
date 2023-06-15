@@ -10,6 +10,7 @@ describe('Trip', () => {
       dogType: DogTemperamentEnum.SHY,
       walkerId: '1',
       dogs: ['1'],
+      addressId: '1',
     });
 
     expect(trip.id).toBeDefined();
@@ -25,6 +26,7 @@ describe('Trip', () => {
         dogType: DogTemperamentEnum.SHY,
         walkerId: '1',
         dogs: ['1'],
+        addressId: '1',
       },
       { deletedAt: new Date('2021-01-01T12:00:00') }
     );
@@ -40,6 +42,7 @@ describe('Trip', () => {
       dogType: DogTemperamentEnum.SHY,
       walkerId: '1',
       dogs: ['1'],
+      addressId: '1',
     });
 
     expect(trip.delete()).toBe(true);
@@ -53,6 +56,7 @@ describe('Trip', () => {
       dogType: DogTemperamentEnum.SHY,
       walkerId: '1',
       dogs: ['1'],
+      addressId: '1',
     });
 
     const added = trip.addDog('1');
@@ -67,6 +71,7 @@ describe('Trip', () => {
       dogType: DogTemperamentEnum.SHY,
       walkerId: '1',
       dogs: ['1'],
+      addressId: '1',
     });
 
     const added = trip.addDog('2');
@@ -82,6 +87,7 @@ describe('Trip', () => {
       dogType: DogTemperamentEnum.SHY,
       walkerId: '1',
       dogs: ['1'],
+      addressId: '1',
     });
 
     const removed = trip.removeDog('2');
@@ -96,6 +102,7 @@ describe('Trip', () => {
       dogType: DogTemperamentEnum.SHY,
       walkerId: '1',
       dogs: ['1'],
+      addressId: '1',
     });
 
     const removed = trip.removeDog('1');
@@ -111,6 +118,7 @@ describe('Trip', () => {
       dogType: DogTemperamentEnum.SHY,
       walkerId: '1',
       dogs: ['1'],
+      addressId: '1',
     });
 
     trip.addDog('2');
@@ -128,6 +136,7 @@ describe('Trip', () => {
         dogType: DogTemperamentEnum.SHY,
         walkerId: '1',
         dogs: ['1'],
+        addressId: '1',
       },
       {
         id: 'custom_id',
@@ -147,6 +156,7 @@ describe('Trip', () => {
       dogType: DogTemperamentEnum.SHY,
       walkerId: '1',
       dogs: ['1'],
+      addressId: '1',
     });
 
     expect(trip.startDate).toEqual(new Date('2021-01-01T12:00:00'));
@@ -166,6 +176,7 @@ describe('Trip', () => {
       dogType: DogTemperamentEnum.SHY,
       walkerId: '1',
       dogs: ['1'],
+      addressId: '1',
     });
 
     expect(trip.toJSON()).toEqual({
@@ -177,6 +188,8 @@ describe('Trip', () => {
       walkerId: '1',
       dogs: ['1'],
       createdAt: trip.createdAt.toISOString(),
+      addressId: '1',
+      deletedAt: undefined,
     });
   });
 });

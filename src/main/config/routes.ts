@@ -5,6 +5,7 @@ import getDogs from '../routes/getDogs';
 import createUser from '../routes/createUser';
 import createDog from '../routes/createDog';
 import addAddress from '../routes/addAddress';
+import getTrips from '../routes/getTrips';
 
 export default (app: Express): void => {
   const router = Router();
@@ -15,4 +16,5 @@ export default (app: Express): void => {
   createUser(router);
   createDog(router);
   addAddress(router);
+  getTrips(router);
 };
