@@ -7,6 +7,7 @@ import createDog from '../routes/createDog';
 import addAddress from '../routes/addAddress';
 import getTrips from '../routes/getTrips';
 import createTrip from '../routes/createTrip';
+import deleteDog from '../routes/deleteDog';
 
 export default (app: Express): void => {
   const router = Router();
@@ -19,4 +20,5 @@ export default (app: Express): void => {
   addAddress(router);
   getTrips(router);
   createTrip(router);
+  deleteDog(router);
 };
