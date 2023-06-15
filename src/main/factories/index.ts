@@ -15,6 +15,9 @@ import { AddAddressController } from '../../app/controllers/addAddress.controlle
 import { PrismaTripRepository } from '../../infrastructure/repositories/prisma/trip.repository';
 import { GetTripsController } from '../../app/controllers/getTrips.controller';
 import { GetTripsUseCase } from '../../app/useCases/getTrips.useCase';
+import { CreateTripUseCase } from '../../app/useCases/createTrip.useCase';
+import { CreateTripController } from '../../app/controllers/createTrip.controller';
+import { GetAddressUseCase } from '../../app/useCases/getAddress.useCase';
 
 const prisma = new PrismaClient();
 
@@ -62,4 +65,11 @@ export function makeGetTripsController() {
   const getTripsUseCase = new GetTripsUseCase(tripRepository);
   const getTripsController = new GetTripsController(getTripsUseCase);
   return getTripsController;
+}
+
+export function makeCreateTripController() {
+  const createTripUseCase = new CreateTripUseCase(tripRepository);
+  const getAddressUseCase = new GetAddressUseCase(userRepository);
+  const createTripController = new CreateTripController(createTripUseCase, getAddressUseCase);
+  return createTripController;
 }
