@@ -72,8 +72,11 @@ export class Dog {
     return this.props.tutorId;
   }
 
-  public remove(): void {
+  public remove(): boolean {
+    if (this.props.deletedAt) return false;
+
     this.props.deletedAt = new Date();
+    return true;
   }
 
   public toJSON(): IDog<string> {
