@@ -20,6 +20,8 @@ import { CreateTripController } from '../../app/controllers/createTrip.controlle
 import { GetAddressUseCase } from '../../app/useCases/getAddress.useCase';
 import { DeleteDogController } from '../../app/controllers/deleteDog.controller';
 import { DeleteDogUseCase } from '../../app/useCases/deleteDog.useCase';
+import { GetTripController } from '../../app/controllers/getTrip.controller';
+import { GetTripUseCase } from '../../app/useCases/getTrip.useCase';
 
 const prisma = new PrismaClient();
 
@@ -80,4 +82,10 @@ export function makeDeleteDogController() {
   const deleteDogUseCase = new DeleteDogUseCase(dogRepository);
   const deleteDogController = new DeleteDogController(deleteDogUseCase);
   return deleteDogController;
+}
+
+export function makeGetTripController() {
+  const getTripUseCase = new GetTripUseCase(tripRepository, dogRepository, userRepository);
+  const getTripController = new GetTripController(getTripUseCase);
+  return getTripController;
 }
