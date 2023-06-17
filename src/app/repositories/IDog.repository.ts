@@ -5,4 +5,5 @@ export interface IDogRepository {
   findById(id: string): Promise<Dog | undefined>;
   findByTutorId(userId: string): Promise<Dog[]>;
   findAll(): Promise<Dog[]>;
+  findByIds(ids: string[]): Promise<Dog[]>;
 }

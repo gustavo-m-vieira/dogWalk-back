@@ -66,6 +66,12 @@ export class MockDogRepository implements IDogRepository {
     return dog;
   }
 
+  async findByIds(ids: string[]): Promise<Dog[]> {
+    const dogs = this.dogs.filter((d) => ids.includes(d.id));
+
+    return dogs;
+  }
+
   async findByTutorId(tutorId: string): Promise<Dog[]> {
     const dogs = this.dogs.filter((d) => d.tutorId === tutorId);
 

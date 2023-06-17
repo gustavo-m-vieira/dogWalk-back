@@ -33,6 +33,33 @@ export class PrismaDogRepository implements IDogRepository {
     );
   }
 
+  async findByIds(ids: Array<string>): Promise<Dog[]> {
+    const dogs = await this.prisma.dogs.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+
+    return dogs.map(
+      (dog) =>
+        new Dog(
+          {
+            ...dog,
+            tutorId: dog.TutorId,
+            size: dog.size as InnerDogSizeEnum,
+            temperament: dog.temperament as InnerDogTemperamentEnum,
+          },
+          {
+            createdAt: dog.createdAt,
+            deletedAt: dog.deletedAt || undefined,
+            id: dog.id,
+          }
+        )
+    );
+  }
+
   async findByTutorId(tutorId: string): Promise<Dog[]> {
     const dogs = await this.prisma.dogs.findMany({
       where: {
