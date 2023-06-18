@@ -36,6 +36,8 @@ export class GetTripsController implements IController {
         },
       };
     } catch (error) {
+      console.error(error);
+
       return {
         statusCode: 500,
         body: {

@@ -137,6 +137,8 @@ export class PrismaDogRepository implements IDogRepository {
         },
       });
     } catch (error) {
+      console.error(error);
+
       if ((error as Error).message.includes('Dogs_TutorId_fkey')) {
         throw new Error('Tutor not found');
       }

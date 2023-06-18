@@ -1,4 +1,4 @@
-import { ConfirmDogTripUseCase } from '../useCases/confirmDogTrip.useCase';
+import { ReturnDogFromTripUseCase } from '../useCases/returnDogFromTrip.useCase';
 import { IController, IRequest, IResponse } from './IController';
 
 interface IPath {
@@ -6,8 +6,8 @@ interface IPath {
   dogId: string;
 }
 
-export class ConfirmDogTripController implements IController {
-  constructor(private readonly confirmDogTripUseCase: ConfirmDogTripUseCase) {}
+export class ReturnDogFromTripController implements IController {
+  constructor(private readonly returnDogFromTripUseCase: ReturnDogFromTripUseCase) {}
 
   async handle(request: IRequest<any, IPath>): Promise<IResponse> {
     const { tripId, dogId } = request.pathParameters;
@@ -15,21 +15,19 @@ export class ConfirmDogTripController implements IController {
     if (!tripId || !dogId) return { statusCode: 400, body: { message: 'Missing parameters' } };
 
     try {
-      await this.confirmDogTripUseCase.execute(tripId, dogId);
+      await this.returnDogFromTripUseCase.execute(tripId, dogId);
 
       return {
         statusCode: 200,
         body: {
-          message: 'Dog confirmed',
+          message: 'Dog returned',
         },
       };
     } catch (error) {
       console.error(error);
 
       if (
-        ['Trip not found', 'Dog not in trip', 'Dog already dropped'].includes(
-          (error as Error).message
-        )
+        ['Trip not found', 'Dog not in trip', 'Dog not caught'].includes((error as Error).message)
       ) {
         return {
           statusCode: 400,

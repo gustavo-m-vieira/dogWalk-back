@@ -1,3 +1,4 @@
+import { v4 as uuidV4 } from 'uuid';
 import { DogTemperamentEnum } from '../enums';
 
 interface IDog {
@@ -38,7 +39,7 @@ export class Trip {
       dogType: props.dogType,
       walkerId: props.walkerId,
       dogs: props.dogs,
-      id: options.id || 'any_id',
+      id: options.id || uuidV4(),
       addressId: props.addressId,
       createdAt: options.createdAt || new Date(),
       deletedAt: options.deletedAt,
