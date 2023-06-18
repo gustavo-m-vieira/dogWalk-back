@@ -96,4 +96,22 @@ describe('Dog Entity', () => {
 
     expect(dog.deletedAt).toBeDefined();
   });
+
+  test('softDelete should do nothing because its already deleted', () => {
+    const dog = new Dog(
+      {
+        name: 'any_name',
+        breed: 'any_breed',
+        size: DogSizeEnum.MEDIUM,
+        birthDate: new Date('2022-02-02'),
+        temperament: DogTemperamentEnum.ANGRY,
+        tutorId: 'any_id',
+      },
+      { createdAt: new Date('2022-02-02'), id: 'any_id', deletedAt: new Date() }
+    );
+
+    expect(dog.remove()).toBeFalsy();
+
+    expect(dog.deletedAt).toBeDefined();
+  });
 });

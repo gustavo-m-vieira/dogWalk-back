@@ -1,17 +1,6 @@
-import { Address } from '../entities/address';
-import { Dog } from '../entities/dog';
-import { Trip } from '../entities/trip';
-import { User } from '../entities/user';
 import { IDogRepository } from '../repositories/IDog.repository';
 import { ITripRepository } from '../repositories/ITrip.repository';
 import { IUserRepository } from '../repositories/IUser.repository';
-
-interface IResponse {
-  trip: Trip;
-  dogs: Dog[];
-  walker: User;
-  address: Address;
-}
 
 export class GetTripUseCase {
   constructor(
@@ -20,8 +9,8 @@ export class GetTripUseCase {
     private readonly userRepository: IUserRepository
   ) {}
 
-  async execute(id: string): Promise<IResponse> {
-    const trip = await this.tripRepository.findById(id);
+  async execute(tripId: string) {
+    const trip = await this.tripRepository.findById(tripId);
 
     if (!trip) throw new Error('Trip not found');
 
@@ -29,15 +18,25 @@ export class GetTripUseCase {
 
     if (!walker) throw new Error('Walker not found');
 
-    const dogs = await this.dogRepository.findByIds(trip.dogs);
+    const dogs = await this.dogRepository.findByIds(trip.dogs.map((dog) => dog.id));
 
     const address = walker.addresses.find((ad) => ad.id === trip.addressId)!;
 
     return {
-      trip,
-      dogs,
-      walker,
-      address,
+      ...trip.toJSON(),
+      dogs: trip.dogs.map(({ id, caughtAt, droppedAt }) => {
+        const dog = dogs.find((d) => d.id === id)!;
+        return {
+          ...dog.toJSON(),
+          caughtAt,
+          droppedAt,
+        };
+      }),
+      walker: {
+        name: walker.name,
+        id: walker.id,
+      },
+      address: { ...address.toJSON(), UserId: undefined, createdAt: undefined },
     };
   }
 }

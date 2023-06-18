@@ -9,7 +9,7 @@ describe('Trip', () => {
       slots: 1,
       dogType: DogTemperamentEnum.SHY,
       walkerId: '1',
-      dogs: ['1'],
+      dogs: [{ id: '1' }],
       addressId: '1',
     });
 
@@ -25,7 +25,7 @@ describe('Trip', () => {
         slots: 1,
         dogType: DogTemperamentEnum.SHY,
         walkerId: '1',
-        dogs: ['1'],
+        dogs: [{ id: '1' }],
         addressId: '1',
       },
       { deletedAt: new Date('2021-01-01T12:00:00') }
@@ -41,7 +41,7 @@ describe('Trip', () => {
       slots: 1,
       dogType: DogTemperamentEnum.SHY,
       walkerId: '1',
-      dogs: ['1'],
+      dogs: [{ id: '1' }],
       addressId: '1',
     });
 
@@ -55,7 +55,7 @@ describe('Trip', () => {
       slots: 1,
       dogType: DogTemperamentEnum.SHY,
       walkerId: '1',
-      dogs: ['1'],
+      dogs: [{ id: '1' }],
       addressId: '1',
     });
 
@@ -70,13 +70,13 @@ describe('Trip', () => {
       slots: 1,
       dogType: DogTemperamentEnum.SHY,
       walkerId: '1',
-      dogs: ['1'],
+      dogs: [{ id: '1' }],
       addressId: '1',
     });
 
     const added = trip.addDog('2');
     expect(added).toBe(true);
-    expect(trip.dogs).toEqual(['1', '2']);
+    expect(trip.dogs).toEqual([{ id: '1' }, { id: '2' }]);
   });
 
   test('trying to remove a dog that is not on the trip', () => {
@@ -86,7 +86,7 @@ describe('Trip', () => {
       slots: 1,
       dogType: DogTemperamentEnum.SHY,
       walkerId: '1',
-      dogs: ['1'],
+      dogs: [{ id: '1' }],
       addressId: '1',
     });
 
@@ -101,7 +101,7 @@ describe('Trip', () => {
       slots: 1,
       dogType: DogTemperamentEnum.SHY,
       walkerId: '1',
-      dogs: ['1'],
+      dogs: [{ id: '1' }],
       addressId: '1',
     });
 
@@ -117,14 +117,19 @@ describe('Trip', () => {
       slots: 1,
       dogType: DogTemperamentEnum.SHY,
       walkerId: '1',
-      dogs: ['1'],
+      dogs: [{ id: '1' }, { id: '2' }],
       addressId: '1',
     });
 
-    trip.addDog('2');
     trip.addDog('3');
+    trip.addDog('4');
     trip.removeDog('1');
-    expect(trip.dogsDiff()).toStrictEqual({ added: ['2', '3'], removed: ['1'] });
+    trip.dropDog('2');
+    expect(trip.dogsDiff()).toStrictEqual({
+      added: [{ id: '3' }, { id: '4' }],
+      removed: [{ id: '1' }],
+      updated: [{ id: '2', droppedAt: expect.any(Date) }],
+    });
   });
 
   test('should create a trip with custom values', () => {
@@ -135,7 +140,7 @@ describe('Trip', () => {
         slots: 1,
         dogType: DogTemperamentEnum.SHY,
         walkerId: '1',
-        dogs: ['1'],
+        dogs: [{ id: '1' }],
         addressId: '1',
       },
       {
@@ -155,7 +160,7 @@ describe('Trip', () => {
       slots: 1,
       dogType: DogTemperamentEnum.SHY,
       walkerId: '1',
-      dogs: ['1'],
+      dogs: [{ id: '1' }],
       addressId: '1',
     });
 
@@ -165,7 +170,7 @@ describe('Trip', () => {
     expect(trip.slots).toBe(1);
     expect(trip.dogType).toBe(DogTemperamentEnum.SHY);
     expect(trip.walkerId).toBe('1');
-    expect(trip.dogs).toEqual(['1']);
+    expect(trip.dogs).toEqual([{ id: '1' }]);
   });
 
   test('toJSON should return the correct values', () => {
@@ -175,7 +180,7 @@ describe('Trip', () => {
       slots: 1,
       dogType: DogTemperamentEnum.SHY,
       walkerId: '1',
-      dogs: ['1'],
+      dogs: [{ id: '1' }],
       addressId: '1',
     });
 
@@ -186,10 +191,72 @@ describe('Trip', () => {
       slots: 1,
       dogType: DogTemperamentEnum.SHY,
       walkerId: '1',
-      dogs: ['1'],
+      dogs: [{ id: '1' }],
       createdAt: trip.createdAt.toISOString(),
       addressId: '1',
       deletedAt: undefined,
     });
+  });
+
+  test('Catch a dog that is not on the trip', () => {
+    const trip = new Trip({
+      startDate: new Date('2021-01-01T12:00:00'),
+      duration: 60,
+      slots: 2,
+      dogType: DogTemperamentEnum.SHY,
+      walkerId: '1',
+      dogs: [{ id: '1' }, { id: '2' }],
+      addressId: '1',
+    });
+
+    const caught = trip.catchDog('3');
+    expect(caught).toBe(false);
+  });
+
+  test('Catch a dog that is on the trip', () => {
+    const trip = new Trip({
+      startDate: new Date('2021-01-01T12:00:00'),
+      duration: 60,
+      slots: 2,
+      dogType: DogTemperamentEnum.SHY,
+      walkerId: '1',
+      dogs: [{ id: '1' }, { id: '2' }],
+      addressId: '1',
+    });
+
+    const caught = trip.catchDog('2');
+    expect(caught).toBe(true);
+    expect(trip.dogs).toEqual([{ id: '1' }, { id: '2', caughtAt: expect.any(Date) }]);
+  });
+
+  test('Drop a dog that is not on the trip', () => {
+    const trip = new Trip({
+      startDate: new Date('2021-01-01T12:00:00'),
+      duration: 60,
+      slots: 2,
+      dogType: DogTemperamentEnum.SHY,
+      walkerId: '1',
+      dogs: [{ id: '1' }, { id: '2' }],
+      addressId: '1',
+    });
+
+    const dropped = trip.dropDog('3');
+    expect(dropped).toBe(false);
+  });
+
+  test('Drop a dog that is on the trip', () => {
+    const trip = new Trip({
+      startDate: new Date('2021-01-01T12:00:00'),
+      duration: 60,
+      slots: 2,
+      dogType: DogTemperamentEnum.SHY,
+      walkerId: '1',
+      dogs: [{ id: '1' }, { id: '2' }],
+      addressId: '1',
+    });
+
+    const dropped = trip.dropDog('2');
+    expect(dropped).toBe(true);
+    expect(trip.dogs).toEqual([{ id: '1' }, { id: '2', droppedAt: expect.any(Date) }]);
   });
 });
