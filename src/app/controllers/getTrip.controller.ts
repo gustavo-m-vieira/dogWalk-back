@@ -12,19 +12,13 @@ export class GetTripController implements IController {
     const { tripId } = request.pathParameters;
 
     try {
-      const { dogs, trip, walker, address } = await this.getTripUseCase.execute(tripId);
+      const trip = await this.getTripUseCase.execute(tripId);
 
       return {
         statusCode: 200,
         body: {
           message: 'Trip found successfully.',
-          trip: {
-            ...trip.toJSON(),
-            dogs: dogs.map((dog) => dog.toJSON()),
-            walker: walker.toJSON(),
-            address: address.toJSON(),
-            addresses: undefined,
-          },
+          trip,
         },
       };
     } catch (error) {

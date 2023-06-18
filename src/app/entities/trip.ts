@@ -1,5 +1,11 @@
 import { DogTemperamentEnum } from '../enums';
 
+interface IDog {
+  id: string;
+  caughtAt?: Date;
+  droppedAt?: Date;
+}
+
 interface ITrip<DateType> {
   id: string;
   startDate: DateType;
@@ -9,7 +15,7 @@ interface ITrip<DateType> {
   slots: number;
   dogType: DogTemperamentEnum;
   walkerId: string;
-  dogs: string[];
+  dogs: IDog[];
   addressId: string;
 }
 
@@ -22,7 +28,7 @@ interface IOptions {
 export class Trip {
   private props: ITrip<Date>;
 
-  private previousDogs: string[] = [];
+  private previousDogs: IDog[] = [];
 
   constructor(props: Omit<ITrip<Date>, 'id' | 'createdAt' | 'deletedAt'>, options: IOptions = {}) {
     this.props = {
@@ -38,7 +44,7 @@ export class Trip {
       deletedAt: options.deletedAt,
     };
 
-    this.previousDogs = [...this.props.dogs];
+    this.previousDogs = this.props.dogs.map((dog) => ({ ...dog }));
   }
 
   get id(): string {
@@ -69,7 +75,7 @@ export class Trip {
     return this.props.walkerId;
   }
 
-  get dogs(): string[] {
+  get dogs(): IDog[] {
     return this.props.dogs;
   }
 
@@ -93,27 +99,56 @@ export class Trip {
   }
 
   addDog(dogId: string): Boolean {
-    if (this.dogs.includes(dogId)) return false;
+    if (this.dogs.find(({ id }) => id === dogId)) return false;
 
-    this.dogs.push(dogId);
+    this.dogs.push({ id: dogId });
     return true;
   }
 
   removeDog(dogId: string): Boolean {
-    if (!this.dogs.includes(dogId)) return false;
+    if (!this.dogs.find(({ id }) => id === dogId)) return false;
 
-    this.dogs.splice(this.dogs.indexOf(dogId), 1);
+    this.props.dogs = this.dogs.filter(({ id }) => id !== dogId);
+
     return true;
   }
 
-  dogsDiff(): { added: string[]; removed: string[] } {
-    const added = this.dogs.filter((dog) => !this.previousDogs.includes(dog));
-    const removed = this.previousDogs.filter((dog) => !this.dogs.includes(dog));
+  dogsDiff(): { added: IDog[]; removed: IDog[]; updated: IDog[] } {
+    const added = this.dogs.filter(({ id }) => !this.previousDogs.find((dog) => dog.id === id));
+
+    const removed = this.previousDogs.filter(({ id }) => !this.dogs.find((dog) => dog.id === id));
+
+    const updated = this.dogs.filter(({ id, caughtAt, droppedAt }) =>
+      this.previousDogs.find(
+        (dog) => dog.id === id && (dog.caughtAt !== caughtAt || dog.droppedAt !== droppedAt)
+      )
+    );
 
     return {
       added,
       removed,
+      updated,
     };
+  }
+
+  catchDog(dogId: string): Boolean {
+    const dog = this.dogs.find(({ id }) => id === dogId);
+
+    if (!dog || dog.caughtAt) return false;
+
+    dog.caughtAt = new Date();
+
+    return true;
+  }
+
+  dropDog(dogId: string): Boolean {
+    const dog = this.dogs.find(({ id }) => id === dogId);
+
+    if (!dog || dog.droppedAt) return false;
+
+    dog.droppedAt = new Date();
+
+    return true;
   }
 
   toJSON(): ITrip<string> {

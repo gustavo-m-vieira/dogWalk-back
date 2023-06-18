@@ -73,8 +73,8 @@ model TripsDogs {
   TripId    String
   DogId     String
   createdAt DateTime
-  catched   DateTime?
-  dropped   DateTime?
+  caughtAt  DateTime?
+  droppedAt DateTime?
   trip      Trips     @relation(fields: [TripId], references: [id])
   dog       Dogs      @relation(fields: [DogId], references: [id])
 

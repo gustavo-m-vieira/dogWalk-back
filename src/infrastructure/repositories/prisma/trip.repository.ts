@@ -15,6 +15,8 @@ export class PrismaTripRepository implements ITripRepository {
         TripsDogs: {
           select: {
             DogId: true,
+            caughtAt: true,
+            droppedAt: true,
           },
         },
       },
@@ -29,7 +31,11 @@ export class PrismaTripRepository implements ITripRepository {
         duration: trip.duration,
         slots: trip.slots,
         startDate: trip.startDate,
-        dogs: trip.TripsDogs.map((tripDog) => tripDog.DogId),
+        dogs: trip.TripsDogs.map((tripDog) => ({
+          id: tripDog.DogId,
+          caughtAt: tripDog.caughtAt || undefined,
+          droppedAt: tripDog.droppedAt || undefined,
+        })),
         addressId: trip.addressesId,
       },
       {
@@ -52,6 +58,8 @@ export class PrismaTripRepository implements ITripRepository {
         TripsDogs: {
           select: {
             DogId: true,
+            caughtAt: true,
+            droppedAt: true,
           },
         },
       },
@@ -66,7 +74,11 @@ export class PrismaTripRepository implements ITripRepository {
             duration: trip.duration,
             slots: trip.slots,
             startDate: trip.startDate,
-            dogs: trip.TripsDogs.map((tripDog) => tripDog.DogId),
+            dogs: trip.TripsDogs.map((tripDog) => ({
+              id: tripDog.DogId,
+              caughtAt: tripDog.caughtAt || undefined,
+              droppedAt: tripDog.droppedAt || undefined,
+            })),
             addressId: trip.addressesId,
           },
           {
@@ -94,6 +106,8 @@ export class PrismaTripRepository implements ITripRepository {
         TripsDogs: {
           select: {
             DogId: true,
+            caughtAt: true,
+            droppedAt: true,
           },
         },
       },
@@ -108,7 +122,11 @@ export class PrismaTripRepository implements ITripRepository {
             duration: trip.duration,
             slots: trip.slots,
             startDate: trip.startDate,
-            dogs: trip.TripsDogs.map((tripDog) => tripDog.DogId),
+            dogs: trip.TripsDogs.map((tripDog) => ({
+              id: tripDog.DogId,
+              caughtAt: tripDog.caughtAt || undefined,
+              droppedAt: tripDog.droppedAt || undefined,
+            })),
             addressId: trip.addressesId,
           },
           {
@@ -136,6 +154,8 @@ export class PrismaTripRepository implements ITripRepository {
         TripsDogs: {
           select: {
             DogId: true,
+            caughtAt: true,
+            droppedAt: true,
           },
         },
       },
@@ -150,7 +170,11 @@ export class PrismaTripRepository implements ITripRepository {
             duration: trip.duration,
             slots: trip.slots,
             startDate: trip.startDate,
-            dogs: trip.TripsDogs.map((tripDog) => tripDog.DogId),
+            dogs: trip.TripsDogs.map((tripDog) => ({
+              id: tripDog.DogId,
+              caughtAt: tripDog.caughtAt || undefined,
+              droppedAt: tripDog.droppedAt || undefined,
+            })),
             addressId: trip.addressesId,
           },
           {
@@ -163,7 +187,7 @@ export class PrismaTripRepository implements ITripRepository {
   }
 
   async save(trip: Trip): Promise<void> {
-    const { added, removed } = trip.dogsDiff();
+    const { added, removed, updated } = trip.dogsDiff();
 
     await this.prisma.trips.upsert({
       where: {
@@ -179,15 +203,26 @@ export class PrismaTripRepository implements ITripRepository {
         deletedAt: trip.deletedAt,
         addressesId: trip.addressId,
         TripsDogs: {
-          deleteMany: removed.map((dogId) => ({
-            DogId: dogId,
+          deleteMany: removed.map(({ id }) => ({
+            DogId: id,
           })),
           createMany: {
-            data: added.map((dogId) => ({
-              DogId: dogId,
+            data: added.map(({ id, caughtAt, droppedAt }) => ({
+              DogId: id,
+              caughtAt,
+              droppedAt,
               createdAt: new Date(),
             })),
           },
+          updateMany: updated.map(({ id, caughtAt, droppedAt }) => ({
+            where: {
+              DogId: id,
+            },
+            data: {
+              caughtAt,
+              droppedAt,
+            },
+          })),
         },
       },
       create: {
@@ -202,8 +237,10 @@ export class PrismaTripRepository implements ITripRepository {
         addressesId: trip.addressId,
         TripsDogs: {
           createMany: {
-            data: trip.dogs.map((dogId) => ({
-              DogId: dogId,
+            data: trip.dogs.map(({ id, caughtAt, droppedAt }) => ({
+              DogId: id,
+              caughtAt,
+              droppedAt,
               createdAt: new Date(),
             })),
           },

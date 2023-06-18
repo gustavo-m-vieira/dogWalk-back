@@ -14,7 +14,7 @@ export class MockTripRepository implements ITripRepository {
           duration: 30,
           slots: 2,
           startDate: new Date('2021-01-01T00:00:00.000Z'),
-          dogs: ['1'],
+          dogs: [{ id: '1' }],
           addressId: '1',
         },
         { id: '1', createdAt: new Date('2021-01-01T00:00:00.000Z') }
@@ -26,7 +26,7 @@ export class MockTripRepository implements ITripRepository {
           duration: 30,
           slots: 2,
           startDate: new Date('2021-01-01T00:00:00.000Z'),
-          dogs: ['1'],
+          dogs: [{ id: '1' }],
           addressId: '1',
         },
         { id: '2', createdAt: new Date('2021-01-01T00:00:00.000Z') }
@@ -38,7 +38,7 @@ export class MockTripRepository implements ITripRepository {
           duration: 30,
           slots: 2,
           startDate: new Date('2021-01-01T00:00:00.000Z'),
-          dogs: ['1'],
+          dogs: [{ id: '1' }],
           addressId: '1',
         },
         { id: '3', createdAt: new Date('2021-01-01T00:00:00.000Z') }
@@ -50,7 +50,7 @@ export class MockTripRepository implements ITripRepository {
           duration: 30,
           slots: 2,
           startDate: new Date('2021-01-01T00:00:00.000Z'),
-          dogs: ['1'],
+          dogs: [{ id: '1' }],
           addressId: '1',
         },
         { id: '4', createdAt: new Date('2021-01-01T00:00:00.000Z') }
@@ -87,7 +87,7 @@ export class MockTripRepository implements ITripRepository {
   }
 
   async findByDogId(dogId: string): Promise<Trip[]> {
-    const trips = this.trips.filter((trip) => trip.dogs.includes(dogId));
+    const trips = this.trips.filter((trip) => trip.dogs.some((dog) => dog.id === dogId));
 
     return trips;
   }
