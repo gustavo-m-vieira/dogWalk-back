@@ -11,6 +11,7 @@ interface IDog<DateType> {
   createdAt: DateType;
   deletedAt?: DateType;
   tutorId: string;
+  image?: string;
 }
 
 export interface IOptions {
@@ -70,6 +71,10 @@ export class Dog {
 
   get tutorId(): string {
     return this.props.tutorId;
+  }
+
+  get image(): string | undefined {
+    return this.props.image;
   }
 
   public remove(): boolean {

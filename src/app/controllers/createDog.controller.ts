@@ -9,13 +9,14 @@ interface IBody {
   birthDate: string;
   temperament: DogTemperamentEnum;
   tutorId: string;
+  image?: string;
 }
 
 export class CreateDogController implements IController {
   constructor(private readonly createDogUseCase: CreateDogUseCase) {}
 
   async handle(request: IRequest<IBody>): Promise<IResponse> {
-    const { name, breed, size, birthDate, temperament, tutorId } = request.body;
+    const { name, breed, size, birthDate, temperament, tutorId, image } = request.body;
 
     if (!name || !breed || !size || !birthDate || !temperament || !tutorId) {
       return {
@@ -34,6 +35,7 @@ export class CreateDogController implements IController {
         birthDate,
         temperament,
         tutorId,
+        image,
       });
 
       return {

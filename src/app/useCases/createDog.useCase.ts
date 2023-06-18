@@ -6,7 +6,7 @@ export class CreateDogUseCase {
   constructor(private readonly dogsRepository: IDogRepository) {}
 
   async execute(data: ICreateDogDTO): Promise<Dog> {
-    const { name, breed, size, birthDate, temperament, tutorId } = data;
+    const { name, breed, size, birthDate, temperament, tutorId, image } = data;
 
     const dog = new Dog({
       name,
@@ -15,6 +15,7 @@ export class CreateDogUseCase {
       birthDate: new Date(birthDate),
       temperament,
       tutorId,
+      image,
     });
 
     await this.dogsRepository.save(dog);

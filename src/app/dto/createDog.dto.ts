@@ -7,4 +7,5 @@ export interface ICreateDogDTO {
   birthDate: string;
   temperament: DogTemperamentEnum;
   tutorId: string;
+  image?: string;
 }
