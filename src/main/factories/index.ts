@@ -24,6 +24,8 @@ import { GetTripController } from '../../app/controllers/getTrip.controller';
 import { GetTripUseCase } from '../../app/useCases/getTrip.useCase';
 import { AddDogToTripController } from '../../app/controllers/addDogToTrip.controller';
 import { AddDogToTripUseCase } from '../../app/useCases/addDogToTrip.useCase';
+import { RemoveDogFromTripController } from '../../app/controllers/removeDogFromTrip.controller';
+import { RemoveDogFromTripUseCase } from '../../app/useCases/removeDogFromTrip.useCase';
 
 const prisma = new PrismaClient();
 
@@ -96,4 +98,10 @@ export function makeAddDogToTripController() {
   const addDogToTripUseCase = new AddDogToTripUseCase(tripRepository, dogRepository);
   const addDogToTripController = new AddDogToTripController(addDogToTripUseCase);
   return addDogToTripController;
+}
+
+export function makeRemoveDogFromTripController() {
+  const removeDogFromTripUseCase = new RemoveDogFromTripUseCase(tripRepository);
+  const removeDogFromTripController = new RemoveDogFromTripController(removeDogFromTripUseCase);
+  return removeDogFromTripController;
 }
