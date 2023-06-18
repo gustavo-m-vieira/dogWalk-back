@@ -22,6 +22,8 @@ export class DeleteDogController implements IController {
         },
       };
     } catch (error) {
+      console.error(error);
+
       if ((error as Error).message === 'Dog not found') {
         return {
           statusCode: 404,

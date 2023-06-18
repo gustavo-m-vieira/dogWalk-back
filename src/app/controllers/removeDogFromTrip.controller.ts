@@ -23,6 +23,8 @@ export class RemoveDogFromTripController implements IController {
         },
       };
     } catch (error) {
+      console.error(error);
+
       if (['Trip not found'].includes((error as Error).message)) {
         return {
           statusCode: 404,

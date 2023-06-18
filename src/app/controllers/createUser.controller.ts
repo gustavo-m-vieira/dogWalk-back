@@ -57,7 +57,7 @@ export class CreateUserController implements IController {
         },
       };
     } catch (error) {
-      console.log({ error });
+      console.error({ error });
 
       if ((error as Error).message === 'Email already in use') {
         return {

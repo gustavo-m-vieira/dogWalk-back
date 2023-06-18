@@ -25,6 +25,8 @@ export class AddDogToTripController implements IController {
         },
       };
     } catch (error) {
+      console.error(error);
+
       if (['Trip not found', 'Dog not found'].includes((error as Error).message)) {
         return {
           statusCode: 404,

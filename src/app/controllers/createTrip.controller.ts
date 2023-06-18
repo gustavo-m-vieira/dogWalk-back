@@ -60,6 +60,8 @@ export class CreateTripController implements IController {
         },
       };
     } catch (error) {
+      console.error(error);
+
       if ((error as Error).message === 'User not found') {
         return {
           statusCode: 404,
