@@ -23,7 +23,7 @@ describe('GetTripsController', () => {
         slots: 1,
         dogType: DogTemperamentEnum.SHY,
         walkerId: '1',
-        dogs: ['1'],
+        dogs: [{ id: '1' }],
         addressId: '1',
       }),
     ]);
@@ -39,18 +39,6 @@ describe('GetTripsController', () => {
     expect(executeSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('should return 400 when missing date', async () => {
-    const response = await getTripsController.handle({
-      pathParameters: undefined,
-      queryStringParameters: {} as any,
-      body: {},
-      headers: {},
-    });
-
-    expect(response.statusCode).toBe(400);
-    expect(executeSpy).toHaveBeenCalledTimes(0);
-  });
-
   it('should return 500 when error', async () => {
     executeSpy.mockImplementationOnce(() => {
       throw new Error();
@@ -58,7 +46,7 @@ describe('GetTripsController', () => {
 
     const response = await getTripsController.handle({
       pathParameters: undefined,
-      queryStringParameters: { startDate: '2022-01-01', walkerId: '1' },
+      queryStringParameters: { walkerId: '1' },
       body: {},
       headers: {},
     });

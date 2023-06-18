@@ -3,7 +3,7 @@ import { GetTripsUseCase } from '../useCases/getTrips.useCase';
 
 interface IQuery {
   walkerId?: string;
-  startDate: string;
+  startDate?: string;
   zipCode?: string;
 }
 
@@ -13,19 +13,10 @@ export class GetTripsController implements IController {
   async handle(request: IRequest<any, undefined, IQuery>): Promise<IResponse> {
     const { walkerId, startDate, zipCode } = request.queryStringParameters;
 
-    if (!startDate) {
-      return {
-        statusCode: 400,
-        body: {
-          message: 'startDate is required',
-        },
-      };
-    }
-
     try {
       const trips = await this.getTripsUseCase.execute({
         walkerId,
-        date: new Date(startDate),
+        date: startDate ? new Date(startDate) : undefined,
         zipCode,
       });
 
