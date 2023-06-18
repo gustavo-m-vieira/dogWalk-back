@@ -24,6 +24,7 @@ export class PrismaDogRepository implements IDogRepository {
         tutorId: dog.TutorId,
         size: dog.size as InnerDogSizeEnum,
         temperament: dog.temperament as InnerDogTemperamentEnum,
+        image: dog.image || undefined,
       },
       {
         createdAt: dog.createdAt,
@@ -50,6 +51,7 @@ export class PrismaDogRepository implements IDogRepository {
             tutorId: dog.TutorId,
             size: dog.size as InnerDogSizeEnum,
             temperament: dog.temperament as InnerDogTemperamentEnum,
+            image: dog.image || undefined,
           },
           {
             createdAt: dog.createdAt,
@@ -75,6 +77,7 @@ export class PrismaDogRepository implements IDogRepository {
             tutorId: dog.TutorId,
             size: dog.size as InnerDogSizeEnum,
             temperament: dog.temperament as InnerDogTemperamentEnum,
+            image: dog.image || undefined,
           },
           {
             createdAt: dog.createdAt,
@@ -96,6 +99,7 @@ export class PrismaDogRepository implements IDogRepository {
             tutorId: dog.TutorId,
             size: dog.size as InnerDogSizeEnum,
             temperament: dog.temperament as InnerDogTemperamentEnum,
+            image: dog.image || undefined,
           },
           {
             createdAt: dog.createdAt,
@@ -107,7 +111,7 @@ export class PrismaDogRepository implements IDogRepository {
   }
 
   async save(dog: Dog): Promise<void> {
-    const { tutorId, id, birthDate, breed, createdAt, name, size, temperament, deletedAt } =
+    const { tutorId, id, birthDate, breed, createdAt, name, size, temperament, deletedAt, image } =
       dog.toJSON();
 
     try {
@@ -124,6 +128,7 @@ export class PrismaDogRepository implements IDogRepository {
           size,
           temperament,
           TutorId: tutorId,
+          image,
         },
         update: {
           birthDate,
@@ -133,6 +138,7 @@ export class PrismaDogRepository implements IDogRepository {
           size,
           temperament,
           deletedAt,
+          image,
           TutorId: tutorId,
         },
       });

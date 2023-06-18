@@ -51,6 +51,7 @@ model Dogs {
   deletedAt   DateTime?
   TutorId     String
   tutor       Users              @relation(fields: [TutorId], references: [id])
+  image       String?
   TripsDogs   TripsDogs[]
 }
 
