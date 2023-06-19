@@ -33,7 +33,7 @@ export class MockTripRepository implements ITripRepository {
       ),
       new Trip(
         {
-          walkerId: '1',
+          walkerId: '4',
           dogType: DogTemperamentEnum.SHY,
           duration: 30,
           slots: 2,
@@ -51,7 +51,7 @@ export class MockTripRepository implements ITripRepository {
       ),
       new Trip(
         {
-          walkerId: '1',
+          walkerId: '100',
           dogType: DogTemperamentEnum.SHY,
           duration: 30,
           slots: 2,
