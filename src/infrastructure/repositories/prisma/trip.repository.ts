@@ -90,6 +90,49 @@ export class PrismaTripRepository implements ITripRepository {
     );
   }
 
+  async findAll(options?: IOptions): Promise<Trip[]> {
+    const { startDate } = options || {};
+
+    const trips = await this.prisma.trips.findMany({
+      where: {
+        ...(startDate && { startDate }),
+      },
+      include: {
+        TripsDogs: {
+          select: {
+            DogId: true,
+            caughtAt: true,
+            droppedAt: true,
+          },
+        },
+      },
+    });
+
+    return trips.map(
+      (trip) =>
+        new Trip(
+          {
+            walkerId: trip.DogWalkerId,
+            dogType: trip.dogType as InnerDogTemperamentEnum,
+            duration: trip.duration,
+            slots: trip.slots,
+            startDate: trip.startDate,
+            dogs: trip.TripsDogs.map((tripDog) => ({
+              id: tripDog.DogId,
+              caughtAt: tripDog.caughtAt || undefined,
+              droppedAt: tripDog.droppedAt || undefined,
+            })),
+            addressId: trip.addressesId,
+          },
+          {
+            createdAt: trip.createdAt,
+            deletedAt: trip.deletedAt || undefined,
+            id: trip.id,
+          }
+        )
+    );
+  }
+
   async findByDogId(dogId: string, options?: IOptions): Promise<Trip[]> {
     const { startDate } = options || {};
 

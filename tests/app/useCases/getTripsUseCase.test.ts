@@ -14,10 +14,10 @@ describe('GetTripsUseCase', () => {
     expect(trips.length).toBe(4);
   });
 
-  it('should return an empty array when missing date', async () => {
+  it('should return an array with no filters', async () => {
     const trips = await getTripsUseCase.execute({} as any);
 
-    expect(trips.length).toBe(0);
+    expect(trips.length).toBe(4);
   });
 
   it('should return an array of trips of zipCode', async () => {
