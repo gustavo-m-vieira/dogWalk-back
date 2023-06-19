@@ -30,6 +30,8 @@ import { ConfirmDogTripController } from '../../app/controllers/confirmDogTrip.c
 import { ConfirmDogTripUseCase } from '../../app/useCases/confirmDogTrip.useCase';
 import { ReturnDogFromTripUseCase } from '../../app/useCases/returnDogFromTrip.useCase';
 import { ReturnDogFromTripController } from '../../app/controllers/returnDogFromTrip.controller';
+import { DeleteTripController } from '../../app/controllers/deleteTrip.controller';
+import { DeleteTripUseCase } from '../../app/useCases/deleteTrip.useCase';
 
 const prisma = new PrismaClient();
 
@@ -120,4 +122,10 @@ export function makeReturnDogFromTripController() {
   const returnDogFromTripUseCase = new ReturnDogFromTripUseCase(tripRepository);
   const returnDogFromTripController = new ReturnDogFromTripController(returnDogFromTripUseCase);
   return returnDogFromTripController;
+}
+
+export function makeDeleteTripController() {
+  const deleteTripUseCase = new DeleteTripUseCase(tripRepository);
+  const deleteTripController = new DeleteTripController(deleteTripUseCase);
+  return deleteTripController;
 }
