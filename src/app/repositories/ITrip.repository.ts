@@ -10,4 +10,5 @@ export interface ITripRepository {
   findByWalkerId(userId: string, options?: IOptions): Promise<Trip[]>;
   findByDogId(dogId: string, options?: IOptions): Promise<Trip[]>;
   findByZipCode(zipCode: string, options?: IOptions): Promise<Trip[]>;
+  findAll(options?: IOptions): Promise<Trip[]>;
 }

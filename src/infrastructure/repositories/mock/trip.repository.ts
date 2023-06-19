@@ -91,4 +91,8 @@ export class MockTripRepository implements ITripRepository {
 
     return trips;
   }
+
+  async findAll(): Promise<Trip[]> {
+    return this.trips;
+  }
 }

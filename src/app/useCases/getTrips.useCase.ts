@@ -12,6 +12,6 @@ export class GetTripsUseCase {
     if (data.walkerId)
       return this.tripRepository.findByWalkerId(data.walkerId, { startDate: data.date });
 
-    return [];
+    return this.tripRepository.findAll({ startDate: data.date });
   }
 }
