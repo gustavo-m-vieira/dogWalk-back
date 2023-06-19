@@ -34,6 +34,7 @@ export class Dog {
       birthDate: props.birthDate,
       temperament: props.temperament,
       tutorId: props.tutorId,
+      image: props.image,
     };
   }
 

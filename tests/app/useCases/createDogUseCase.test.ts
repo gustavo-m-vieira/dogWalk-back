@@ -60,6 +60,7 @@ describe('CreateDogUseCase', () => {
       temperament: 'ANGRY',
       name: 'Rex',
       tutorId: 'tutor-id',
+      image: undefined,
     });
   });
 
