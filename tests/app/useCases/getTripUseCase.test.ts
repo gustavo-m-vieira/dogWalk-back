@@ -48,6 +48,7 @@ describe('GetTripUseCase', () => {
           size: 'MEDIUM',
           temperament: 'SHY',
           tutorId: '1',
+          image: undefined,
         },
       ],
       duration: 30,

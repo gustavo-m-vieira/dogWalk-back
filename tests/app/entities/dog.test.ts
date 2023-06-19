@@ -29,6 +29,7 @@ describe('Dog Entity', () => {
       createdAt: '2022-02-02T00:00:00.000Z',
       tutorId: 'any_id',
       deletedAt: undefined,
+      image: undefined,
     });
   });
 
@@ -52,6 +53,7 @@ describe('Dog Entity', () => {
       createdAt: expect.any(String),
       tutorId: 'any_id',
       deletedAt: undefined,
+      image: undefined,
     });
   });
 
@@ -89,6 +91,7 @@ describe('Dog Entity', () => {
         birthDate: new Date('2022-02-02'),
         temperament: DogTemperamentEnum.ANGRY,
         tutorId: 'any_id',
+        image: undefined,
       },
       { createdAt: new Date('2022-02-02'), id: 'any_id' }
     );
@@ -107,6 +110,7 @@ describe('Dog Entity', () => {
         birthDate: new Date('2022-02-02'),
         temperament: DogTemperamentEnum.ANGRY,
         tutorId: 'any_id',
+        image: undefined,
       },
       { createdAt: new Date('2022-02-02'), id: 'any_id', deletedAt: new Date() }
     );
