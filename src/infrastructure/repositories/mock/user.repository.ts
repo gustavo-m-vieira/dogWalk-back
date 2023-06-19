@@ -1,3 +1,4 @@
+import { Address } from '../../../app/entities/address';
 import { User } from '../../../app/entities/user';
 import { UserRoleEnum } from '../../../app/enums';
 import { IUserRepository } from '../../../app/repositories/IUser.repository';
@@ -51,7 +52,20 @@ export class MockUserRepository implements IUserRepository {
           role: UserRoleEnum.WALKER,
           telephone: '00000000000',
           cpf: '47550151032',
-          addresses: [],
+          addresses: [
+            new Address(
+              {
+                city: 'city',
+                district: 'neighborhood',
+                number: 1,
+                state: 'state',
+                street: 'street',
+                zipCode: 'zipCode',
+                country: 'country',
+              },
+              { id: '1', createdAt: new Date('2021-01-01T00:00:00.000Z') }
+            ),
+          ],
         },
         { id: '4', createdAt: new Date('2021-01-01T00:00:00.000Z') }
       ),
