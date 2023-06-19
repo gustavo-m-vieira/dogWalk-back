@@ -13,6 +13,7 @@ import addDogToTrip from '../routes/addDogToTrip';
 import removeDogFromTrip from '../routes/removeDogFromTrip';
 import confirmDogTrip from '../routes/confirmDogTrip';
 import returnDogFromTrip from '../routes/returnDogFromTrip';
+import deleteTrip from '../routes/deleteTrip';
 
 export default (app: Express): void => {
   const router = Router();
@@ -31,4 +32,5 @@ export default (app: Express): void => {
   removeDogFromTrip(router);
   confirmDogTrip(router);
   returnDogFromTrip(router);
+  deleteTrip(router);
 };

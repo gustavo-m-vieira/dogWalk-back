@@ -53,6 +53,7 @@ export class PrismaTripRepository implements ITripRepository {
       where: {
         DogWalkerId: walkerId,
         ...(startDate && { startDate }),
+        deletedAt: null,
       },
       include: {
         TripsDogs: {
@@ -96,6 +97,7 @@ export class PrismaTripRepository implements ITripRepository {
     const trips = await this.prisma.trips.findMany({
       where: {
         ...(startDate && { startDate }),
+        deletedAt: null,
       },
       include: {
         TripsDogs: {
@@ -144,6 +146,7 @@ export class PrismaTripRepository implements ITripRepository {
           },
         },
         ...(startDate && { startDate }),
+        deletedAt: null,
       },
       include: {
         TripsDogs: {
@@ -192,6 +195,7 @@ export class PrismaTripRepository implements ITripRepository {
           },
         },
         ...(startDate && { startDate }),
+        deletedAt: null,
       },
       include: {
         TripsDogs: {
