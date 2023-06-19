@@ -38,7 +38,13 @@ export class MockTripRepository implements ITripRepository {
           duration: 30,
           slots: 2,
           startDate: new Date('2021-01-01T00:00:00.000Z'),
-          dogs: [{ id: '1' }],
+          dogs: [
+            {
+              id: '1',
+              caughtAt: new Date('2021-01-01T00:00:00.000Z'),
+              droppedAt: new Date('2021-01-01T00:00:00.000Z'),
+            },
+          ],
           addressId: '1',
         },
         { id: '3', createdAt: new Date('2021-01-01T00:00:00.000Z') }
@@ -50,7 +56,7 @@ export class MockTripRepository implements ITripRepository {
           duration: 30,
           slots: 2,
           startDate: new Date('2021-01-01T00:00:00.000Z'),
-          dogs: [{ id: '1' }],
+          dogs: [{ id: '1', caughtAt: new Date('2021-01-01T00:00:00.000Z') }],
           addressId: '1',
         },
         { id: '4', createdAt: new Date('2021-01-01T00:00:00.000Z') }
