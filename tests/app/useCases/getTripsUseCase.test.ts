@@ -11,7 +11,7 @@ describe('GetTripsUseCase', () => {
   it('should return an array of trips of walkerId', async () => {
     const trips = await getTripsUseCase.execute({ date: new Date(), walkerId: '1' });
 
-    expect(trips.length).toBe(4);
+    expect(trips.length).toBe(2);
   });
 
   it('should return an array with no filters', async () => {

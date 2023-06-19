@@ -24,7 +24,7 @@ export class GetTripUseCase {
 
     return {
       ...trip.toJSON(),
-      dogs: trip.dogs.map(({ id, caughtAt, droppedAt }) => {
+      dogs: trip.toJSON().dogs.map(({ id, caughtAt, droppedAt }) => {
         const dog = dogs.find((d) => d.id === id)!;
         return {
           ...dog.toJSON(),

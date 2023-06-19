@@ -1,10 +1,10 @@
 import { v4 as uuidV4 } from 'uuid';
 import { DogTemperamentEnum } from '../enums';
 
-interface IDog {
+interface IDog<DateType> {
   id: string;
-  caughtAt?: Date;
-  droppedAt?: Date;
+  caughtAt?: DateType;
+  droppedAt?: DateType;
 }
 
 interface ITrip<DateType> {
@@ -16,7 +16,7 @@ interface ITrip<DateType> {
   slots: number;
   dogType: DogTemperamentEnum;
   walkerId: string;
-  dogs: IDog[];
+  dogs: IDog<DateType>[];
   addressId: string;
 }
 
@@ -29,7 +29,7 @@ interface IOptions {
 export class Trip {
   private props: ITrip<Date>;
 
-  private previousDogs: IDog[] = [];
+  private previousDogs: IDog<Date>[] = [];
 
   constructor(props: Omit<ITrip<Date>, 'id' | 'createdAt' | 'deletedAt'>, options: IOptions = {}) {
     this.props = {
@@ -76,7 +76,7 @@ export class Trip {
     return this.props.walkerId;
   }
 
-  get dogs(): IDog[] {
+  get dogs(): IDog<Date>[] {
     return this.props.dogs;
   }
 
@@ -114,7 +114,7 @@ export class Trip {
     return true;
   }
 
-  dogsDiff(): { added: IDog[]; removed: IDog[]; updated: IDog[] } {
+  dogsDiff(): { added: IDog<Date>[]; removed: IDog<Date>[]; updated: IDog<Date>[] } {
     const added = this.dogs.filter(({ id }) => !this.previousDogs.find((dog) => dog.id === id));
 
     const removed = this.previousDogs.filter(({ id }) => !this.dogs.find((dog) => dog.id === id));
@@ -160,7 +160,11 @@ export class Trip {
       slots: this.slots,
       dogType: this.dogType,
       walkerId: this.walkerId,
-      dogs: this.dogs,
+      dogs: this.dogs.map(({ id, caughtAt, droppedAt }) => ({
+        id,
+        caughtAt: caughtAt?.toISOString(),
+        droppedAt: droppedAt?.toISOString(),
+      })),
       addressId: this.addressId,
       createdAt: this.createdAt.toISOString(),
       deletedAt: this.deletedAt?.toISOString(),

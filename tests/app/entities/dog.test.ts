@@ -77,6 +77,7 @@ describe('Dog Entity', () => {
     expect(dog.createdAt.toISOString()).toBe('2022-02-02T00:00:00.000Z');
     expect(dog.deletedAt).toBeUndefined();
     expect(dog.tutorId).toBe('any_id');
+    expect(dog.image).toBeUndefined();
   });
 
   test('softDelete should set the deletedAt property', () => {
