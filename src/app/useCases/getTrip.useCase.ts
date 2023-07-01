@@ -1,3 +1,4 @@
+import { IGetTripDTO } from '../dto/getTrip.dto';
 import { IDogRepository } from '../repositories/IDog.repository';
 import { ITripRepository } from '../repositories/ITrip.repository';
 import { IUserRepository } from '../repositories/IUser.repository';
@@ -9,7 +10,9 @@ export class GetTripUseCase {
     private readonly userRepository: IUserRepository
   ) {}
 
-  async execute(tripId: string) {
+  async execute(data: IGetTripDTO) {
+    const { tripId } = data;
+
     const trip = await this.tripRepository.findById(tripId);
 
     if (!trip) throw new Error('Trip not found');

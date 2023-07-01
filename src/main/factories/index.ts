@@ -107,7 +107,7 @@ export function makeAddDogToTripController() {
 }
 
 export function makeRemoveDogFromTripController() {
-  const removeDogFromTripUseCase = new RemoveDogFromTripUseCase(tripRepository);
+  const removeDogFromTripUseCase = new RemoveDogFromTripUseCase(tripRepository, dogRepository);
   const removeDogFromTripController = new RemoveDogFromTripController(removeDogFromTripUseCase);
   return removeDogFromTripController;
 }
@@ -119,7 +119,7 @@ export function makeConfirmDogTripController() {
 }
 
 export function makeReturnDogFromTripController() {
-  const returnDogFromTripUseCase = new ReturnDogFromTripUseCase(tripRepository);
+  const returnDogFromTripUseCase = new ReturnDogFromTripUseCase(tripRepository, dogRepository);
   const returnDogFromTripController = new ReturnDogFromTripController(returnDogFromTripUseCase);
   return returnDogFromTripController;
 }

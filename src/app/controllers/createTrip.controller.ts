@@ -25,6 +25,8 @@ export class CreateTripController implements IController {
     const { addressId, dogType, duration, slots, startDate } = request.body;
     const { userId: walkerId } = request.pathParameters;
 
+    const { authorizer: requester } = request.requestContext!;
+
     if (!addressId || !dogType || !duration || !slots || !startDate) {
       return {
         statusCode: 400,
@@ -38,6 +40,7 @@ export class CreateTripController implements IController {
       const address = await this.getAddressUseCase.execute({
         userId: walkerId,
         addressId,
+        requester,
       });
 
       const trip = await this.createTripUseCase.execute({
@@ -47,6 +50,7 @@ export class CreateTripController implements IController {
         slots,
         startDate,
         walkerId,
+        requester,
       });
 
       return {
@@ -62,20 +66,24 @@ export class CreateTripController implements IController {
     } catch (error) {
       console.error(error);
 
-      if ((error as Error).message === 'User not found') {
+      if (['User not found', 'Address not found'].includes((error as Error).message)) {
         return {
           statusCode: 404,
           body: {
-            message: 'User not found',
+            message: (error as Error).message,
           },
         };
       }
 
-      if ((error as Error).message === 'Address not found') {
+      if (
+        ['You cannot get another user address', 'Cannot create trip for another user'].includes(
+          (error as Error).message
+        )
+      ) {
         return {
-          statusCode: 404,
+          statusCode: 403,
           body: {
-            message: 'Address not found',
+            message: (error as Error).message,
           },
         };
       }

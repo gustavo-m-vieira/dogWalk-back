@@ -11,8 +11,10 @@ export class GetDogsController implements IController {
   async handle(request: IRequest<any, undefined, IQuery>): Promise<IResponse> {
     const { tutorId } = request.queryStringParameters;
 
+    const { authorizer: requester } = request.requestContext!;
+
     try {
-      const dogs = await this.getDogsUseCase.execute({ tutorId });
+      const dogs = await this.getDogsUseCase.execute({ tutorId, requester });
 
       return {
         statusCode: 200,
@@ -23,6 +25,16 @@ export class GetDogsController implements IController {
       };
     } catch (error) {
       console.error(error);
+
+      if ((error as Error).message === 'You cannot get another user dogs') {
+        return {
+          statusCode: 403,
+          body: {
+            message: 'You cannot get another user dogs',
+          },
+        };
+      }
+
       return {
         statusCode: 500,
         body: {

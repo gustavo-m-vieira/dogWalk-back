@@ -1,3 +1,4 @@
+import { User } from '../entities/user';
 import type { DogSizeEnum, DogTemperamentEnum } from '../enums';
 
 export interface ICreateDogDTO {
@@ -8,4 +9,5 @@ export interface ICreateDogDTO {
   temperament: DogTemperamentEnum;
   tutorId: string;
   image?: string;
+  requester: User;
 }

@@ -2,11 +2,25 @@ import { GetTripsController } from '../../../src/app/controllers/getTrips.contro
 import { MockTripRepository } from '../../../src/infrastructure/repositories/mock/trip.repository';
 import { GetTripsUseCase } from '../../../src/app/useCases/getTrips.useCase';
 import { Trip } from '../../../src/app/entities/trip';
-import { DogTemperamentEnum } from '../../../src/app/enums';
+import { DogTemperamentEnum, UserRoleEnum } from '../../../src/app/enums';
+import { User } from '../../../src/app/entities/user';
 
 jest.mock('../../../src/app/useCases/getTrips.useCase');
 
 const executeSpy = jest.spyOn(GetTripsUseCase.prototype, 'execute');
+
+const requester = new User(
+  {
+    name: 'any_name',
+    email: 'any_email',
+    telephone: 'any_telephone',
+    passwordHash: 'any_password',
+    role: UserRoleEnum.ADMIN,
+    cpf: '47550151032',
+    addresses: [],
+  },
+  { id: 'userId' }
+);
 
 describe('GetTripsController', () => {
   let getTripsController: GetTripsController;
@@ -33,6 +47,9 @@ describe('GetTripsController', () => {
       queryStringParameters: { startDate: '2022-01-01', walkerId: '1' },
       body: {},
       headers: {},
+      requestContext: {
+        authorizer: requester,
+      },
     });
 
     expect(response.statusCode).toBe(200);
@@ -49,6 +66,9 @@ describe('GetTripsController', () => {
       queryStringParameters: { walkerId: '1' },
       body: {},
       headers: {},
+      requestContext: {
+        authorizer: requester,
+      },
     });
 
     expect(response.statusCode).toBe(500);

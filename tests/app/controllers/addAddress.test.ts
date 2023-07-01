@@ -2,8 +2,23 @@ import { AddAddressUseCase } from '../../../src/app/useCases/addAddress.useCase'
 import { Address } from '../../../src/app/entities/address';
 import { MockUserRepository } from '../../../src/infrastructure/repositories/mock/user.repository';
 import { AddAddressController } from '../../../src/app/controllers/addAddress.controller';
+import { UserRoleEnum } from '../../../src/app/enums';
+import { User } from '../../../src/app/entities/user';
 
 jest.mock('../../../src/app/useCases/addAddress.useCase');
+
+const requester = new User(
+  {
+    name: 'any_name',
+    email: 'any_email',
+    telephone: 'any_telephone',
+    passwordHash: 'any_password',
+    role: UserRoleEnum.ADMIN,
+    cpf: '47550151032',
+    addresses: [],
+  },
+  { id: 'userId' }
+);
 
 const executeSpy = jest.spyOn(AddAddressUseCase.prototype, 'execute');
 
@@ -24,13 +39,16 @@ describe('AddAddressController', () => {
         district: 'Centro',
         state: 'SP',
         country: 'Brasil',
-      },
+      } as any,
       pathParameters: {
         userId: '123',
       },
       headers: {},
       queryStringParameters: {},
-    } as any);
+      requestContext: {
+        authorizer: requester,
+      },
+    });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toEqual({
@@ -68,6 +86,9 @@ describe('AddAddressController', () => {
       },
       headers: {},
       queryStringParameters: {},
+      requestContext: {
+        authorizer: requester,
+      },
     });
 
     expect(response.statusCode).toBe(200);
@@ -96,6 +117,9 @@ describe('AddAddressController', () => {
       },
       headers: {},
       queryStringParameters: {},
+      requestContext: {
+        authorizer: requester,
+      },
     });
 
     expect(response.statusCode).toBe(404);
@@ -123,6 +147,9 @@ describe('AddAddressController', () => {
       },
       headers: {},
       queryStringParameters: {},
+      requestContext: {
+        authorizer: requester,
+      },
     });
 
     expect(response.statusCode).toBe(500);

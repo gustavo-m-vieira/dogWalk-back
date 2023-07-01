@@ -4,8 +4,8 @@ import { MockUserRepository } from '../../../src/infrastructure/repositories/moc
 import { User } from '../../../src/app/entities/user';
 import { UserRoleEnum } from '../../../src/app/enums';
 
-const findByIdSpy = jest.spyOn(MockUserRepository.prototype, 'findById').mockResolvedValue(
-  new User({
+const requester = new User(
+  {
     name: 'any_name',
     email: 'any_email',
     telephone: 'any_telephone',
@@ -13,8 +13,13 @@ const findByIdSpy = jest.spyOn(MockUserRepository.prototype, 'findById').mockRes
     role: UserRoleEnum.ADMIN,
     cpf: '47550151032',
     addresses: [],
-  })
+  },
+  { id: 'userId' }
 );
+
+const findByIdSpy = jest
+  .spyOn(MockUserRepository.prototype, 'findById')
+  .mockResolvedValue(requester);
 
 describe('AddAddressUseCase', () => {
   const mockUserRepository = new MockUserRepository();
@@ -30,6 +35,7 @@ describe('AddAddressUseCase', () => {
       zipCode: 'zipCode',
       userId: 'userId',
       district: 'district',
+      requester,
     });
 
     expect(address).toBeInstanceOf(Address);
@@ -49,7 +55,35 @@ describe('AddAddressUseCase', () => {
         zipCode: 'zipCode',
         userId: 'userId',
         district: 'district',
+        requester,
       })
     ).rejects.toThrow('User not found');
+  });
+
+  it('should throw an error if user is not the same requester', async () => {
+    expect(() =>
+      useCase.execute({
+        city: 'city',
+        country: 'country',
+        number: 1,
+        state: 'state',
+        street: 'street',
+        zipCode: 'zipCode',
+        userId: 'userId',
+        district: 'district',
+        requester: new User(
+          {
+            name: 'any_name',
+            email: 'any_email',
+            telephone: 'any_telephone',
+            passwordHash: 'any_password',
+            role: UserRoleEnum.WALKER,
+            cpf: '47550151032',
+            addresses: [],
+          },
+          { id: 'anotherUserId' }
+        ),
+      })
+    ).rejects.toThrow('You are not allowed to add an address to another user');
   });
 });

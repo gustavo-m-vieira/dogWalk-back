@@ -1,6 +1,6 @@
 import { User } from '../entities/user';
 
-export interface IGetDogsDTO {
-  tutorId?: string;
+export interface IDeleteDogDTO {
+  dogId: string;
   requester: User;
 }

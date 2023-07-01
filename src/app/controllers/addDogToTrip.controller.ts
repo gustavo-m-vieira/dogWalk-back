@@ -12,10 +12,12 @@ export class AddDogToTripController implements IController {
   async handle(request: IRequest<any, IPath>): Promise<IResponse> {
     const { tripId, dogId } = request.pathParameters;
 
+    const { authorizer: requester } = request.requestContext!;
+
     if (!tripId || !dogId) return { statusCode: 400, body: { message: 'Missing parameters' } };
 
     try {
-      const trip = await this.addDogToTripUseCase.execute(tripId, dogId);
+      const trip = await this.addDogToTripUseCase.execute({ tripId, dogId, requester });
 
       return {
         statusCode: 200,
@@ -30,6 +32,15 @@ export class AddDogToTripController implements IController {
       if (['Trip not found', 'Dog not found'].includes((error as Error).message)) {
         return {
           statusCode: 404,
+          body: {
+            message: (error as Error).message,
+          },
+        };
+      }
+
+      if (['You are not the tutor of this dog'].includes((error as Error).message)) {
+        return {
+          statusCode: 403,
           body: {
             message: (error as Error).message,
           },
