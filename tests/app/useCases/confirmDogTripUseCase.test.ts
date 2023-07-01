@@ -50,4 +50,25 @@ describe('ConfirmDogTripUseCase', () => {
       confirmDogTripUseCase.execute({ tripId: '3', dogId: '1', requester })
     ).rejects.toThrowError('Dog already dropped');
   });
+
+  it('should throw an error if user is not the same requester', async () => {
+    expect(() =>
+      confirmDogTripUseCase.execute({
+        tripId: '1',
+        dogId: '1',
+        requester: new User(
+          {
+            name: 'any_name',
+            email: 'any_email',
+            telephone: 'any_telephone',
+            passwordHash: 'any_password',
+            role: UserRoleEnum.WALKER,
+            cpf: '47550151032',
+            addresses: [],
+          },
+          { id: 'anotherUserId' }
+        ),
+      })
+    ).rejects.toThrow('You are not the walker of this trip');
+  });
 });

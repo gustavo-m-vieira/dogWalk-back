@@ -20,9 +20,7 @@ export class RemoveDogFromTripUseCase {
     if (trip.dogs.find((dog) => dog.id === dogId)) {
       const dog = await this.dogRepository.findById(dogId);
 
-      if (!dog) throw new Error('Dog not found');
-
-      if (dog.tutorId !== requester.id && requester.role !== UserRoleEnum.ADMIN)
+      if (dog!.tutorId !== requester.id && requester.role !== UserRoleEnum.ADMIN)
         throw new Error('You cannot remove another user dog');
     }
 

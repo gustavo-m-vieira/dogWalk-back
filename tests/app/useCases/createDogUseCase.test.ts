@@ -96,4 +96,29 @@ describe('CreateDogUseCase', () => {
       })
     ).rejects.toThrowError();
   });
+
+  it('should throw an error if user is not the same requester', async () => {
+    expect(() =>
+      createDogUseCase.execute({
+        name: 'Rex',
+        tutorId: 'tutor-id',
+        size: DogSizeEnum.SMALL,
+        temperament: DogTemperamentEnum.ANGRY,
+        birthDate: '2020-01-01',
+        breed: 'breed',
+        requester: new User(
+          {
+            name: 'any_name',
+            email: 'any_email',
+            telephone: 'any_telephone',
+            passwordHash: 'any_password',
+            role: UserRoleEnum.WALKER,
+            cpf: '47550151032',
+            addresses: [],
+          },
+          { id: 'anotherUserId' }
+        ),
+      })
+    ).rejects.toThrow('You cannot add a dog to another tutor');
+  });
 });

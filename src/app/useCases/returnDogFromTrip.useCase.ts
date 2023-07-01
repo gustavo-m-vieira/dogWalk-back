@@ -26,9 +26,7 @@ export class ReturnDogFromTripUseCase {
 
     const dog = await this.dogRepository.findById(dogId);
 
-    if (!dog) throw new Error('Dog not found');
-
-    if (dog.tutorId !== requester.id && requester.role !== UserRoleEnum.ADMIN)
+    if (dog!.tutorId !== requester.id && requester.role !== UserRoleEnum.ADMIN)
       throw new Error('You cannot return a dog from a trip that is not yours');
 
     if (!tripDogRelation.caughtAt) {

@@ -38,4 +38,24 @@ describe('DeleteTripUseCase', () => {
       deleteTripUseCase.execute({ tripId: '200', requester })
     ).rejects.toThrowError('Trip not found');
   });
+
+  it('should throw an error if user is not the same requester', async () => {
+    expect(() =>
+      deleteTripUseCase.execute({
+        tripId: '1',
+        requester: new User(
+          {
+            name: 'any_name',
+            email: 'any_email',
+            telephone: 'any_telephone',
+            passwordHash: 'any_password',
+            role: UserRoleEnum.WALKER,
+            cpf: '47550151032',
+            addresses: [],
+          },
+          { id: 'anotherUserId' }
+        ),
+      })
+    ).rejects.toThrow('You cannot delete another user trip');
+  });
 });

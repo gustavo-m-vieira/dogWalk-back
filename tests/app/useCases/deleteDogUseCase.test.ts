@@ -38,4 +38,24 @@ describe('DeleteDogUseCase', () => {
       'Dog not found'
     );
   });
+
+  it('should throw an error if user is not the same requester', async () => {
+    expect(() =>
+      deleteDogUseCase.execute({
+        dogId: '1',
+        requester: new User(
+          {
+            name: 'any_name',
+            email: 'any_email',
+            telephone: 'any_telephone',
+            passwordHash: 'any_password',
+            role: UserRoleEnum.WALKER,
+            cpf: '47550151032',
+            addresses: [],
+          },
+          { id: 'anotherUserId' }
+        ),
+      })
+    ).rejects.toThrow('You cannot delete another user dog');
+  });
 });

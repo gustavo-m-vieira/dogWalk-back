@@ -6,9 +6,6 @@ import { User } from '../../../src/app/entities/user';
 
 const saveSpy = jest.spyOn(MockTripRepository.prototype, 'save');
 
-const mockTripRepository = new MockTripRepository();
-const mockDogRepository = new MockDogRepository();
-
 const requester = new User(
   {
     name: 'any_name',
@@ -26,6 +23,8 @@ describe('RemoveDogFromTripUseCase', () => {
   let removeDogFromTripUseCase: RemoveDogFromTripUseCase;
 
   beforeEach(() => {
+    const mockTripRepository = new MockTripRepository();
+    const mockDogRepository = new MockDogRepository();
     removeDogFromTripUseCase = new RemoveDogFromTripUseCase(mockTripRepository, mockDogRepository);
   });
 
@@ -44,5 +43,26 @@ describe('RemoveDogFromTripUseCase', () => {
   it('should be ok if dog is not in the trip', async () => {
     await removeDogFromTripUseCase.execute({ tripId: '1', dogId: '2', requester });
     await removeDogFromTripUseCase.execute({ tripId: '1', dogId: '2', requester });
+  });
+
+  it('should throw an error if user is not the same requester', async () => {
+    expect(() =>
+      removeDogFromTripUseCase.execute({
+        tripId: '1',
+        dogId: '1',
+        requester: new User(
+          {
+            name: 'any_name',
+            email: 'any_email',
+            telephone: 'any_telephone',
+            passwordHash: 'any_password',
+            role: UserRoleEnum.WALKER,
+            cpf: '47550151032',
+            addresses: [],
+          },
+          { id: 'anotherUserId' }
+        ),
+      })
+    ).rejects.toThrow('You cannot remove another user dog');
   });
 });

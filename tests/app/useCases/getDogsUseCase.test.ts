@@ -73,4 +73,43 @@ describe('GetDogsUseCase', () => {
 
     expect(dogs).toStrictEqual([]);
   });
+
+  it('should throw an error if user is not the same requester', async () => {
+    expect(() =>
+      getDogsUseCase.execute({
+        tutorId: 'tutor-id',
+        requester: new User(
+          {
+            name: 'any_name',
+            email: 'any_email',
+            telephone: 'any_telephone',
+            passwordHash: 'any_password',
+            role: UserRoleEnum.WALKER,
+            cpf: '47550151032',
+            addresses: [],
+          },
+          { id: 'anotherUserId' }
+        ),
+      })
+    ).rejects.toThrow('You cannot get another user dogs');
+  });
+
+  it('should get dogs without filters', async () => {
+    const dogs = await getDogsUseCase.execute({
+      requester: new User(
+        {
+          name: 'any_name',
+          email: 'any_email',
+          telephone: 'any_telephone',
+          passwordHash: 'any_password',
+          role: UserRoleEnum.TUTOR,
+          cpf: '47550151032',
+          addresses: [],
+        },
+        { id: 'anotherUserId' }
+      ),
+    });
+
+    expect(dogs).toStrictEqual([]);
+  });
 });

@@ -59,4 +59,31 @@ describe('AddAddressUseCase', () => {
       })
     ).rejects.toThrow('User not found');
   });
+
+  it('should throw an error if user is not the same requester', async () => {
+    expect(() =>
+      useCase.execute({
+        city: 'city',
+        country: 'country',
+        number: 1,
+        state: 'state',
+        street: 'street',
+        zipCode: 'zipCode',
+        userId: 'userId',
+        district: 'district',
+        requester: new User(
+          {
+            name: 'any_name',
+            email: 'any_email',
+            telephone: 'any_telephone',
+            passwordHash: 'any_password',
+            role: UserRoleEnum.WALKER,
+            cpf: '47550151032',
+            addresses: [],
+          },
+          { id: 'anotherUserId' }
+        ),
+      })
+    ).rejects.toThrow('You are not allowed to add an address to another user');
+  });
 });
