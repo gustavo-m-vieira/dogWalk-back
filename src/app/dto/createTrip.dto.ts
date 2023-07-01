@@ -1,3 +1,4 @@
+import { User } from '../entities/user';
 import { DogTemperamentEnum } from '../enums';
 
 export interface ICreateTripDTO {
@@ -7,4 +8,5 @@ export interface ICreateTripDTO {
   slots: number;
   startDate: string;
   walkerId: string;
+  requester: User;
 }

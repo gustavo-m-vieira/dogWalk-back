@@ -24,6 +24,8 @@ export class AddAddressController implements IController {
 
     const { userId } = request.pathParameters;
 
+    const { authorizer: requester } = request.requestContext!;
+
     if (!street || !number || !city || !district || !state || !country || !zipCode || !userId) {
       return {
         statusCode: 400,
@@ -44,6 +46,7 @@ export class AddAddressController implements IController {
         country,
         zipCode,
         userId,
+        requester,
       });
 
       return {
@@ -61,6 +64,15 @@ export class AddAddressController implements IController {
           statusCode: 404,
           body: {
             message: 'User not found',
+          },
+        };
+      }
+
+      if ((error as Error).message === 'You are not allowed to add an address to another user') {
+        return {
+          statusCode: 403,
+          body: {
+            message: 'You are not allowed to add an address to another user',
           },
         };
       }

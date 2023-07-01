@@ -1,9 +1,24 @@
 import { DeleteDogUseCase } from '../../../src/app/useCases/deleteDog.useCase';
 import { MockDogRepository } from '../../../src/infrastructure/repositories/mock/dog.repository';
+import { UserRoleEnum } from '../../../src/app/enums';
+import { User } from '../../../src/app/entities/user';
 
 const saveSpy = jest.spyOn(MockDogRepository.prototype, 'save');
 
 const mockDogRepository = new MockDogRepository();
+
+const requester = new User(
+  {
+    name: 'any_name',
+    email: 'any_email',
+    telephone: 'any_telephone',
+    passwordHash: 'any_password',
+    role: UserRoleEnum.ADMIN,
+    cpf: '47550151032',
+    addresses: [],
+  },
+  { id: 'userId' }
+);
 
 describe('DeleteDogUseCase', () => {
   let deleteDogUseCase: DeleteDogUseCase;
@@ -13,12 +28,14 @@ describe('DeleteDogUseCase', () => {
   });
 
   it('should delete a dog', async () => {
-    await deleteDogUseCase.execute('1');
+    await deleteDogUseCase.execute({ dogId: '1', requester });
 
     expect(saveSpy).toHaveBeenCalled();
   });
 
   it('should throw an error if dog is not found', async () => {
-    await expect(() => deleteDogUseCase.execute('200')).rejects.toThrowError('Dog not found');
+    await expect(() => deleteDogUseCase.execute({ dogId: '200', requester })).rejects.toThrowError(
+      'Dog not found'
+    );
   });
 });

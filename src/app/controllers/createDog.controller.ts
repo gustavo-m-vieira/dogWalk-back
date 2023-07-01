@@ -18,6 +18,8 @@ export class CreateDogController implements IController {
   async handle(request: IRequest<IBody>): Promise<IResponse> {
     const { name, breed, size, birthDate, temperament, tutorId, image } = request.body;
 
+    const { authorizer: requester } = request.requestContext!;
+
     if (!name || !breed || !size || !birthDate || !temperament || !tutorId) {
       return {
         statusCode: 400,
@@ -36,6 +38,7 @@ export class CreateDogController implements IController {
         temperament,
         tutorId,
         image,
+        requester,
       });
 
       return {
@@ -50,6 +53,15 @@ export class CreateDogController implements IController {
           statusCode: 404,
           body: {
             message: 'Tutor not found',
+          },
+        };
+      }
+
+      if ((error as Error).message === 'You cannot add a dog to another tutor') {
+        return {
+          statusCode: 403,
+          body: {
+            message: 'You cannot add a dog to another tutor',
           },
         };
       }

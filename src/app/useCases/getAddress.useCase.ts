@@ -6,7 +6,10 @@ export class GetAddressUseCase {
   constructor(private readonly userRepository: IUserRepository) {}
 
   async execute(data: IGetAddressDTO): Promise<Address> {
-    const { userId, addressId } = data;
+    const { userId, addressId, requester } = data;
+
+    if (requester.role !== 'ADMIN' && requester.id !== userId)
+      throw new Error('You cannot get another user address');
 
     const user = await this.userRepository.findById(userId);
 

@@ -1,7 +1,8 @@
 /* eslint-disable class-methods-use-this */
-import { DogSizeEnum, DogTemperamentEnum } from '../../../src/app/enums';
+import { DogSizeEnum, DogTemperamentEnum, UserRoleEnum } from '../../../src/app/enums';
 import { IDogRepository } from '../../../src/app/repositories/IDog.repository';
 import { CreateDogUseCase } from '../../../src/app/useCases/createDog.useCase';
+import { User } from '../../../src/app/entities/user';
 
 jest.mock('uuid', () => ({
   v4: () => '361eb36f-d02c-4d08-9b3a-57d40df559cc',
@@ -9,11 +10,28 @@ jest.mock('uuid', () => ({
 
 jest.useFakeTimers().setSystemTime(new Date('2023-06-13T23:47:16.998Z'));
 
+const requester = new User(
+  {
+    name: 'any_name',
+    email: 'any_email',
+    telephone: 'any_telephone',
+    passwordHash: 'any_password',
+    role: UserRoleEnum.ADMIN,
+    cpf: '47550151032',
+    addresses: [],
+  },
+  { id: 'userId' }
+);
+
 class MockDogRepository implements IDogRepository {
   private success = 2;
 
   async findById() {
     return undefined;
+  }
+
+  async findByIds() {
+    return [];
   }
 
   async findByTutorId() {
@@ -48,6 +66,7 @@ describe('CreateDogUseCase', () => {
       temperament: DogTemperamentEnum.ANGRY,
       birthDate: '2020-01-01',
       breed: 'breed',
+      requester,
     });
 
     expect(dog.toJSON()).toStrictEqual({
@@ -73,6 +92,7 @@ describe('CreateDogUseCase', () => {
         temperament: DogTemperamentEnum.ANGRY,
         birthDate: '2020-01-01',
         breed: 'breed',
+        requester,
       })
     ).rejects.toThrowError();
   });

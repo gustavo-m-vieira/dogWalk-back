@@ -20,6 +20,8 @@ describe('AuthenticateController', () => {
         password: 'e10adc3949ba59abbe56e057f20f883e',
       },
       headers: {},
+      pathParameters: {},
+      queryStringParameters: {},
     });
 
     expect(response).toEqual(expect.objectContaining({ statusCode: 200 }));
@@ -39,6 +41,8 @@ describe('AuthenticateController', () => {
         password: 'invalid',
       },
       headers: {},
+      pathParameters: {},
+      queryStringParameters: {},
     });
 
     expect(response).toEqual(expect.objectContaining({ statusCode: 400 }));
@@ -52,6 +56,8 @@ describe('AuthenticateController', () => {
     const response = await controller.handle({
       body: {},
       headers: {},
+      pathParameters: {},
+      queryStringParameters: {},
     });
 
     expect(response).toEqual(expect.objectContaining({ statusCode: 400 }));

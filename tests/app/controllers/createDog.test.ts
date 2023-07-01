@@ -2,8 +2,9 @@
 import { CreateDogUseCase } from '../../../src/app/useCases/createDog.useCase';
 import { CreateDogController } from '../../../src/app/controllers/createDog.controller';
 import { IDogRepository } from '../../../src/app/repositories/IDog.repository';
-import { DogSizeEnum, DogTemperamentEnum } from '../../../src/app/enums';
+import { DogSizeEnum, DogTemperamentEnum, UserRoleEnum } from '../../../src/app/enums';
 import { Dog } from '../../../src/app/entities/dog';
+import { User } from '../../../src/app/entities/user';
 
 class MockDogRepository implements IDogRepository {
   async findById() {
@@ -17,7 +18,28 @@ class MockDogRepository implements IDogRepository {
   async save() {
     return undefined;
   }
+
+  async findByIds() {
+    return [];
+  }
+
+  async findAll() {
+    return [];
+  }
 }
+
+const requester = new User(
+  {
+    name: 'any_name',
+    email: 'any_email',
+    telephone: 'any_telephone',
+    passwordHash: 'any_password',
+    role: UserRoleEnum.ADMIN,
+    cpf: '47550151032',
+    addresses: [],
+  },
+  { id: 'userId' }
+);
 
 jest.mock('../../../src/app/useCases/createDog.useCase');
 
@@ -56,6 +78,11 @@ describe('CreateDogController', () => {
         breed: 'breed',
       },
       headers: {},
+      pathParameters: {},
+      queryStringParameters: {},
+      requestContext: {
+        authorizer: requester,
+      },
     });
 
     expect(executeSpy).toHaveBeenCalledWith({
@@ -65,6 +92,8 @@ describe('CreateDogController', () => {
       temperament: 'ANGRY',
       birthDate: '2020-01-01',
       breed: 'breed',
+      image: undefined,
+      requester: expect.any(User),
     });
   });
 
@@ -76,9 +105,14 @@ describe('CreateDogController', () => {
         temperament: DogTemperamentEnum.ANGRY,
         birthDate: '2020-01-01',
         breed: 'breed',
-      },
+      } as any,
       headers: {},
-    } as any);
+      pathParameters: {},
+      queryStringParameters: {},
+      requestContext: {
+        authorizer: requester,
+      },
+    });
 
     expect(response.statusCode).toBe(400);
     expect(response.body).toStrictEqual({
@@ -99,6 +133,11 @@ describe('CreateDogController', () => {
         breed: 'breed',
       },
       headers: {},
+      pathParameters: {},
+      queryStringParameters: {},
+      requestContext: {
+        authorizer: requester,
+      },
     });
 
     expect(response.statusCode).toBe(500);
@@ -120,6 +159,11 @@ describe('CreateDogController', () => {
         breed: 'breed',
       },
       headers: {},
+      pathParameters: {},
+      queryStringParameters: {},
+      requestContext: {
+        authorizer: requester,
+      },
     });
 
     expect(response.statusCode).toBe(404);

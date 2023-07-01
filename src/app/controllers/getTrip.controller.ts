@@ -11,8 +11,10 @@ export class GetTripController implements IController {
   async handle(request: IRequest<any, IPath>): Promise<IResponse> {
     const { tripId } = request.pathParameters;
 
+    const { authorizer: requester } = request.requestContext!;
+
     try {
-      const trip = await this.getTripUseCase.execute(tripId);
+      const trip = await this.getTripUseCase.execute({ tripId, requester });
 
       return {
         statusCode: 200,

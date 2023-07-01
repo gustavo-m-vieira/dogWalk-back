@@ -12,8 +12,10 @@ export class RemoveDogFromTripController implements IController {
   async handle(request: IRequest<any, IPath>): Promise<IResponse> {
     const { tripId, dogId } = request.pathParameters;
 
+    const { authorizer: requester } = request.requestContext!;
+
     try {
-      const trip = await this.removeDogFromTripUseCase.execute(tripId, dogId);
+      const trip = await this.removeDogFromTripUseCase.execute({ tripId, dogId, requester });
 
       return {
         statusCode: 200,
@@ -25,11 +27,20 @@ export class RemoveDogFromTripController implements IController {
     } catch (error) {
       console.error(error);
 
-      if (['Trip not found'].includes((error as Error).message)) {
+      if (['Trip not found', 'Dog not found'].includes((error as Error).message)) {
         return {
           statusCode: 404,
           body: {
             message: (error as Error).message,
+          },
+        };
+      }
+
+      if ((error as Error).message === 'You cannot remove another user dog') {
+        return {
+          statusCode: 403,
+          body: {
+            message: 'You cannot remove another user dog',
           },
         };
       }

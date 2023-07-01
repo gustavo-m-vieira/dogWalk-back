@@ -4,8 +4,8 @@ import { MockUserRepository } from '../../../src/infrastructure/repositories/moc
 import { User } from '../../../src/app/entities/user';
 import { UserRoleEnum } from '../../../src/app/enums';
 
-const findByIdSpy = jest.spyOn(MockUserRepository.prototype, 'findById').mockResolvedValue(
-  new User({
+const requester = new User(
+  {
     name: 'any_name',
     email: 'any_email',
     telephone: 'any_telephone',
@@ -13,8 +13,13 @@ const findByIdSpy = jest.spyOn(MockUserRepository.prototype, 'findById').mockRes
     role: UserRoleEnum.ADMIN,
     cpf: '47550151032',
     addresses: [],
-  })
+  },
+  { id: 'userId' }
 );
+
+const findByIdSpy = jest
+  .spyOn(MockUserRepository.prototype, 'findById')
+  .mockResolvedValue(requester);
 
 describe('AddAddressUseCase', () => {
   const mockUserRepository = new MockUserRepository();
@@ -30,6 +35,7 @@ describe('AddAddressUseCase', () => {
       zipCode: 'zipCode',
       userId: 'userId',
       district: 'district',
+      requester,
     });
 
     expect(address).toBeInstanceOf(Address);
@@ -49,6 +55,7 @@ describe('AddAddressUseCase', () => {
         zipCode: 'zipCode',
         userId: 'userId',
         district: 'district',
+        requester,
       })
     ).rejects.toThrow('User not found');
   });

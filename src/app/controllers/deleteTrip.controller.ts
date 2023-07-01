@@ -11,8 +11,10 @@ export class DeleteTripController implements IController {
   async handle(request: IRequest<any, IPath>): Promise<IResponse> {
     const { tripId } = request.pathParameters;
 
+    const { authorizer: requester } = request.requestContext!;
+
     try {
-      await this.deleteTripUseCase.execute(tripId);
+      await this.deleteTripUseCase.execute({ tripId, requester });
 
       return {
         statusCode: 200,
@@ -28,6 +30,15 @@ export class DeleteTripController implements IController {
           statusCode: 404,
           body: {
             message: 'Trip not found',
+          },
+        };
+      }
+
+      if ((error as Error).message === 'You cannot delete another user trip') {
+        return {
+          statusCode: 403,
+          body: {
+            message: 'You cannot delete another user trip',
           },
         };
       }

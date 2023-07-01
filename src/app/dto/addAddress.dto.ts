@@ -1,3 +1,5 @@
+import { User } from '../entities/user';
+
 export interface IAddAddressDTO {
   street: string;
   number: number;
@@ -8,4 +10,5 @@ export interface IAddAddressDTO {
   country: string;
   zipCode: string;
   userId: string;
+  requester: User;
 }

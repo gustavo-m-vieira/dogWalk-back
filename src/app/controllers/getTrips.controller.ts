@@ -13,11 +13,14 @@ export class GetTripsController implements IController {
   async handle(request: IRequest<any, undefined, IQuery>): Promise<IResponse> {
     const { walkerId, startDate, zipCode } = request.queryStringParameters;
 
+    const { authorizer: requester } = request.requestContext!;
+
     try {
       const trips = await this.getTripsUseCase.execute({
         walkerId,
         date: startDate ? new Date(startDate) : undefined,
         zipCode,
+        requester,
       });
 
       return {
